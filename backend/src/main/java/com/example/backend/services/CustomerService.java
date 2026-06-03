@@ -2,8 +2,10 @@ package com.example.backend.services;
 
 import com.example.backend.models.Customer;
 import com.example.backend.repositories.CustomerRepository;
+import com.example.backend.repositories.BlacklistEntryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -12,6 +14,7 @@ import java.util.List;
 public class CustomerService {
 
     private final CustomerRepository repository;
+    private final BlacklistEntryRepository blacklistRepository;
 
     public Customer create(Customer customer) {
         return repository.save(customer);
@@ -29,5 +32,18 @@ public class CustomerService {
     public Customer update(Integer id, Customer customer) {
         customer.setId(id);
         return repository.save(customer);
+    }
+
+    @Transactional
+    public void delete(Integer id) {
+        if (!repository.existsById(id)) {
+            throw new RuntimeException("Customer not found with ID: " + id);
+        }
+
+        blacklistRepository.findAll().stream()
+                .filter(entry -> entry.getCustomer().getId().equals(id))
+                .forEach(entry -> blacklistRepository.deleteById(entry.getId()));
+
+        repository.deleteById(id);
     }
 }

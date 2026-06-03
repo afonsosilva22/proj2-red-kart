@@ -57,6 +57,12 @@
                             visible="false"
                             managed="false"
                             style="-fx-font-weight: bold; -fx-base: #5cb85c; -fx-text-fill: white;" />
+
+                    <Button fx:id="btnDelete"
+                            text="Delete"
+                            onAction="#deleteCustomer"
+                            disable="true"
+                            style="-fx-font-weight: bold; -fx-base: #d9534f; -fx-text-fill: white;" />
                 </HBox>
 
                 <Label fx:id="lblName" text="Name: "/>

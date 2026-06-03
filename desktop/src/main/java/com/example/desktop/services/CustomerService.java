@@ -85,4 +85,18 @@ public class CustomerService {
             throw new RuntimeException("Failed to update customer: " + response.body());
         }
     }
+
+    public void delete(Integer id) throws Exception {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + "/delete/" + id))
+                .DELETE()
+                .build();
+
+        HttpResponse<String> response =
+                client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        if (response.statusCode() < 200 || response.statusCode() >= 300) {
+            throw new RuntimeException("Failed to delete customer: " + response.body());
+        }
+    }
 }

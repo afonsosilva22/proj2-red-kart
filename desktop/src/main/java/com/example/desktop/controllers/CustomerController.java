@@ -39,6 +39,7 @@ public class CustomerController {
     @FXML private Button btnEdit;
     @FXML private Button btnBlacklist;
     @FXML private Button btnReinstate;
+    @FXML private Button btnDelete;
 
     private final CustomerService service = new CustomerService();
     private final BlacklistEntryService blacklistService = new BlacklistEntryService();
@@ -79,6 +80,7 @@ public class CustomerController {
                     btnEdit.setDisable(noCustomerSelected);
                     btnBlacklist.setDisable(noCustomerSelected);
                     btnReinstate.setDisable(noCustomerSelected);
+                    btnDelete.setDisable(noCustomerSelected);
                 }
         );
 
@@ -204,11 +206,38 @@ public class CustomerController {
         if (result.isPresent() && result.get() == ButtonType.OK) {
             try {
                 blacklistService.reinstateCustomer(selected.getId());
+                loadCustomers();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @FXML
+    private void deleteCustomer() {
+        Customer selected = table.getSelectionModel().getSelectedItem();
+        if (selected == null) return;
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Delete Customer");
+        alert.setHeaderText("Permanently delete " + selected.getName() + "?");
+        alert.setContentText("Warning: This will permanently wipe this record and all associated history data from the database. This action cannot be undone.");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && bondMatchingCheck(result.get())) {
+            try {
+                service.delete(selected.getId());
+
+                table.getSelectionModel().clearSelection();
 
                 loadCustomers();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    private boolean bondMatchingCheck(ButtonType type) {
+        return type == ButtonType.OK;
     }
 }
