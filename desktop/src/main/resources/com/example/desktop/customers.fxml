@@ -4,25 +4,60 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.desktop.controllers.CustomerController">
-   <children>
-      <HBox layoutX="8.0" layoutY="10.0" prefHeight="380.0" prefWidth="583.0" spacing="10.0">
-         <padding>
-            <Insets top="10.0" />
-         </padding>
-         <children>
-            <Button fx:id="btnLoad" mnemonicParsing="false" onAction="#loadCustomers" text="Load Customers" />
-            <Button fx:id="btnAdd" mnemonicParsing="false" onAction="#addCustomer" text="Add Customer" />
-            <TableView fx:id="table" prefHeight="370.0" prefWidth="450.0">
-              <columns>
-                <TableColumn fx:id="colId" prefWidth="41.19994354248047" text="id" />
-                <TableColumn fx:id="colName" prefWidth="134.0" text="name" />
-                  <TableColumn fx:id="colEmail" prefWidth="93.60003662109375" text="email" />
-                  <TableColumn fx:id="colPhone" prefWidth="87.0" text="phone" />
-                  <TableColumn fx:id="colStatus" prefWidth="96.00003051757812" text="status" />
-              </columns>
+<AnchorPane prefHeight="500.0" prefWidth="700.0"
+            xmlns="http://javafx.com/javafx/17.0.12"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.desktop.controllers.CustomerController">
+
+    <children>
+
+        <VBox spacing="10" AnchorPane.topAnchor="10"
+              AnchorPane.leftAnchor="10"
+              AnchorPane.rightAnchor="10"
+              AnchorPane.bottomAnchor="10">
+
+            <HBox spacing="10">
+                <Button text="Refresh Table" onAction="#loadCustomers"/>
+                <Button text="Add Customer" onAction="#addCustomer"/>
+            </HBox>
+
+            <TableView fx:id="table" prefHeight="300">
+                <columns>
+                    <TableColumn fx:id="colId" text="ID"/>
+                    <TableColumn fx:id="colName" text="Name"/>
+                    <TableColumn fx:id="colBirthDate" text="Birth Date"/>
+                    <TableColumn fx:id="colEmail" text="Email"/>
+                    <TableColumn fx:id="colPhone" text="Phone"/>
+                    <TableColumn fx:id="colStatus" text="Status"/>
+                </columns>
             </TableView>
-         </children>
-      </HBox>
-   </children>
+
+            <VBox spacing="8" style="-fx-padding:10; -fx-border-color: lightgray; -fx-border-radius: 4; -fx-background-radius: 4;">
+
+                <HBox alignment="CENTER_LEFT">
+
+                    <Label text="Customer Details"
+                           style="-fx-font-size:16; -fx-font-weight:bold;" />
+
+                    <Region HBox.hgrow="ALWAYS" />
+
+                    <Button fx:id="btnEdit"
+                            text="Edit Customer"
+                            onAction="#editCustomer"
+                            disable="true"
+                            style="-fx-font-weight: bold;" />
+
+                </HBox>
+
+                <Label fx:id="lblName" text="Name: "/>
+                <Label fx:id="lblNif" text="NIF: "/>
+                <Label fx:id="lblIsMember" text="Member: "/>
+                <Label fx:id="lblAddress" text="Address: "/>
+                <Label fx:id="lblRegistrationDate" text="Registration Date: "/>
+
+            </VBox>
+
+        </VBox>
+
+    </children>
 </AnchorPane>

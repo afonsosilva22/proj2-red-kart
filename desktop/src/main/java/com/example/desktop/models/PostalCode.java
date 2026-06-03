@@ -5,7 +5,9 @@ public class PostalCode {
     private String postalCode;
     private String locality;
 
-    public PostalCode() {
+    public PostalCode(String postalCode, String locality) {
+        this.postalCode = postalCode;
+        this.locality = locality;
     }
 
     public String getPostalCode() {

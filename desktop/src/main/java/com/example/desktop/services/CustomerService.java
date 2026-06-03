@@ -65,4 +65,24 @@ public class CustomerService {
 
         return gson.fromJson(response.body(), Customer.class);
     }
+
+    public Customer update(Integer id, Customer customer) throws Exception {
+
+        String json = gson.toJson(customer);
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + "/update/" + id))
+                .header("Content-Type", "application/json")
+                .PUT(HttpRequest.BodyPublishers.ofString(json))
+                .build();
+
+        HttpResponse<String> response =
+                client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        if (response.statusCode() >= 200 && response.statusCode() < 300) {
+            return gson.fromJson(response.body(), Customer.class);
+        } else {
+            throw new RuntimeException("Failed to update customer: " + response.body());
+        }
+    }
 }

@@ -113,12 +113,12 @@ public class Customer {
         return postalCode;
     }
 
-    public void setPostalCode(PostalCode postalCode) {
-        this.postalCode = postalCode;
-    }
-
     public String getPostalCodeValue() {
         return postalCode != null ? postalCode.getPostalCode() : "";
+    }
+
+    public void setPostalCode(PostalCode postalCode) {
+        this.postalCode = postalCode;
     }
 
     public String getLocality() {
