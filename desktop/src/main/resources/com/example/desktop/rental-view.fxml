@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.desktop.controllers.RentalController"
+      spacing="15">
+
+    <Label text="Rental Management" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+
+    <TableView fx:id="rentalTable" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="colId" text="ID" prefWidth="60"/>
+            <TableColumn fx:id="colCustomer" text="Customer" prefWidth="180"/>
+            <TableColumn fx:id="colStart" text="Planned Start" prefWidth="160"/>
+            <TableColumn fx:id="colEnd" text="Planned End" prefWidth="160"/>
+            <TableColumn fx:id="colPrice" text="Base Price" prefWidth="100"/>
+            <TableColumn fx:id="colType" text="Type" prefWidth="100"/>
+            <TableColumn fx:id="colStatus" text="Status" prefWidth="120"/>
+        </columns>
+        <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+        </columnResizePolicy>
+    </TableView>
+</VBox>
