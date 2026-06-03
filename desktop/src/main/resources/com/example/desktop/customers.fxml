@@ -34,11 +34,9 @@
 
             <VBox spacing="8" style="-fx-padding:10; -fx-border-color: lightgray; -fx-border-radius: 4; -fx-background-radius: 4;">
 
-                <HBox alignment="CENTER_LEFT">
+                <HBox alignment="CENTER_LEFT" spacing="10">
 
-                    <Label text="Customer Details"
-                           style="-fx-font-size:16; -fx-font-weight:bold;" />
-
+                    <Label text="Customer Details" style="-fx-font-size:16; -fx-font-weight:bold;" />
                     <Region HBox.hgrow="ALWAYS" />
 
                     <Button fx:id="btnEdit"
@@ -47,6 +45,18 @@
                             disable="true"
                             style="-fx-font-weight: bold;" />
 
+                    <Button fx:id="btnBlacklist"
+                            text="Blacklist"
+                            onAction="#blacklistCustomer"
+                            disable="true"
+                            style="-fx-font-weight: bold; -fx-base: #f0ad4e; -fx-text-fill: white;" />
+
+                    <Button fx:id="btnReinstate"
+                            text="Reinstate"
+                            onAction="#reinstateCustomer"
+                            visible="false"
+                            managed="false"
+                            style="-fx-font-weight: bold; -fx-base: #5cb85c; -fx-text-fill: white;" />
                 </HBox>
 
                 <Label fx:id="lblName" text="Name: "/>

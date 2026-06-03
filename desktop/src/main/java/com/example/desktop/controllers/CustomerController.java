@@ -1,13 +1,16 @@
 package com.example.desktop.controllers;
 
 import com.example.desktop.models.Customer;
+import com.example.desktop.services.BlacklistEntryService;
 import com.example.desktop.services.CustomerService;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -15,6 +18,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Optional;
 
 public class CustomerController {
 
@@ -33,8 +37,11 @@ public class CustomerController {
     @FXML private Label lblRegistrationDate;
 
     @FXML private Button btnEdit;
+    @FXML private Button btnBlacklist;
+    @FXML private Button btnReinstate;
 
     private final CustomerService service = new CustomerService();
+    private final BlacklistEntryService blacklistService = new BlacklistEntryService();
 
     @FXML
     public void initialize() {
@@ -46,15 +53,33 @@ public class CustomerController {
         colPhone.setCellValueFactory(new PropertyValueFactory<>("phone"));
         colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
 
-        table.getSelectionModel().selectedItemProperty().addListener(
-                (obs, oldSelection, customer) -> {
-                    if (customer != null) {
-                        showCustomerDetails(customer);
-                    }
-                });
+        table.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, customer) -> {
+            if (customer != null) {
+                showCustomerDetails(customer);
+
+                if ("suspended".equalsIgnoreCase(customer.getStatus())) {
+                    btnBlacklist.setVisible(false);
+                    btnBlacklist.setManaged(false);
+
+                    btnReinstate.setVisible(true);
+                    btnReinstate.setManaged(true);
+                } else {
+                    btnBlacklist.setVisible(true);
+                    btnBlacklist.setManaged(true);
+
+                    btnReinstate.setVisible(false);
+                    btnReinstate.setManaged(false);
+                }
+            }
+        });
 
         table.getSelectionModel().selectedItemProperty().addListener(
-                (obs, oldVal, newVal) -> btnEdit.setDisable(newVal == null)
+                (obs, oldVal, newVal) -> {
+                    boolean noCustomerSelected = (newVal == null);
+                    btnEdit.setDisable(noCustomerSelected);
+                    btnBlacklist.setDisable(noCustomerSelected);
+                    btnReinstate.setDisable(noCustomerSelected);
+                }
         );
 
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
@@ -78,7 +103,6 @@ public class CustomerController {
 
     @FXML
     public void loadCustomers() {
-
         try {
             table.setItems(
                     FXCollections.observableArrayList(
@@ -99,7 +123,10 @@ public class CustomerController {
             Stage stage = new Stage();
             stage.setTitle("Add Customer");
             stage.setScene(new Scene(root));
-            stage.show();
+
+            stage.showAndWait();
+
+            loadCustomers();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -109,6 +136,7 @@ public class CustomerController {
     @FXML
     private void editCustomer() {
         Customer selected = table.getSelectionModel().getSelectedItem();
+        if (selected == null) return;
 
         try {
             FXMLLoader loader = new FXMLLoader(
@@ -123,10 +151,64 @@ public class CustomerController {
             Stage stage = new Stage();
             stage.setTitle("Edit Customer");
             stage.setScene(new Scene(root));
-            stage.show();
+
+            stage.showAndWait();
+
+            loadCustomers();
 
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void blacklistCustomer() {
+        Customer selected = table.getSelectionModel().getSelectedItem();
+        if (selected == null) return;
+
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/com/example/desktop/add-blacklist.fxml")
+            );
+            Parent root = loader.load();
+
+            AddBlacklistController controller = loader.getController();
+            controller.setCustomer(selected);
+
+            Stage stage = new Stage();
+            stage.setTitle("Blacklist Customer");
+            stage.setScene(new Scene(root));
+
+            stage.showAndWait();
+
+            if (controller.isConfirmed()) {
+                loadCustomers();
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void reinstateCustomer() {
+        Customer selected = table.getSelectionModel().getSelectedItem();
+        if (selected == null) return;
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirm Reinstation");
+        alert.setHeaderText("Reinstate " + selected.getName() + "?");
+        alert.setContentText("This will close their active blacklist entry and restore their account status to 'active'. Proceed?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+                blacklistService.reinstateCustomer(selected.getId());
+
+                loadCustomers();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }

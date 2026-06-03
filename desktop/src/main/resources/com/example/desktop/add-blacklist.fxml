@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.desktop.controllers.AddBlacklistController"
+      spacing="15"
+      prefWidth="350"
+      style="-fx-padding: 20;">
+
+    <Label text="Blacklist Customer" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+    <Label fx:id="lblCustomerName" text="Customer: " style="-fx-text-fill: #666;"/>
+
+    <VBox spacing="5">
+        <Label text="Reason for Blacklisting:" style="-fx-font-weight: bold;"/>
+        <ComboBox fx:id="cmbReason" promptText="Select a reason..." prefWidth="310"/>
+    </VBox>
+
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Button text="Cancel" onAction="#cancel"/>
+        <Button text="Confirm Blacklist" onAction="#confirm"
+                style="-fx-base: #d9534f; -fx-text-fill: white; -fx-font-weight: bold;"/>
+    </HBox>
+
+</VBox>

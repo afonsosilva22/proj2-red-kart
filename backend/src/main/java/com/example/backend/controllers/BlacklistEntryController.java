@@ -32,4 +32,10 @@ public class BlacklistEntryController {
     public ResponseEntity<BlacklistEntry> getById(@PathVariable Integer id) {
         return ResponseEntity.ok(service.getById(id));
     }
+
+    @PutMapping("/reinstate/{customerId}")
+    public ResponseEntity<Void> reinstate(@PathVariable Integer customerId) {
+        service.reinstateCustomer(customerId);
+        return ResponseEntity.ok().build();
+    }
 }
