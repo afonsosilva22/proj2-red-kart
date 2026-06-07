@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.desktop.controllers.AddRentalController"
+      spacing="10"
+      prefWidth="440"
+      prefHeight="560"
+      style="-fx-padding: 20;">
+
+    <Label text="Add New Rental Session" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+
+    <Separator style="-fx-padding: 2 0 5 0;"/>
+    <Label text="Account Affiliations" style="-fx-font-weight: bold; -fx-text-fill: #555;" />
+
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <ComboBox fx:id="customerComboBox" promptText="Select Active Customer" HBox.hgrow="ALWAYS" prefWidth="200" />
+        <ComboBox fx:id="employeeComboBox" promptText="Select Active Employee" HBox.hgrow="ALWAYS" prefWidth="200" />
+    </HBox>
+
+    <Separator style="-fx-padding: 5 0 5 0;"/>
+    <Label text="Rental Logistics" style="-fx-font-weight: bold; -fx-text-fill: #555;" />
+
+    <ComboBox fx:id="typeComboBox" promptText="Select Rental Type ('track' or 'kart')" prefWidth="400" />
+
+    <Label text="Planned Start Time:" style="-fx-font-size: 12px; -fx-text-fill: #666;" />
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <DatePicker fx:id="startPicker" promptText="Start Date" HBox.hgrow="ALWAYS" prefWidth="220" />
+        <ComboBox fx:id="startHourCombo" promptText="HH" prefWidth="80" />
+        <ComboBox fx:id="startMinuteCombo" promptText="MM" prefWidth="80" />
+    </HBox>
+
+    <Label text="Planned End Time:" style="-fx-font-size: 12px; -fx-text-fill: #666;" />
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <DatePicker fx:id="endPicker" promptText="End Date" HBox.hgrow="ALWAYS" prefWidth="220" />
+        <ComboBox fx:id="endHourCombo" promptText="HH" prefWidth="80" />
+        <ComboBox fx:id="endMinuteCombo" promptText="MM" prefWidth="80" />
+    </HBox>
+
+    <Separator style="-fx-padding: 5 0 5 0;"/>
+    <Label text="Financial Details" style="-fx-font-weight: bold; -fx-text-fill: #555;" />
+
+    <HBox spacing="10">
+        <TextField fx:id="basePriceField" promptText="Base Price (e.g. 25.00)" HBox.hgrow="ALWAYS" />
+        <TextField fx:id="discountField" promptText="Discount Decimal (e.g. 0.00)" HBox.hgrow="ALWAYS" />
+    </HBox>
+
+    <Separator style="-fx-padding: 5 0 5 0;"/>
+
+    <Button text="Save Rental Session" onAction="#saveRental" prefWidth="400" style="-fx-font-weight: bold;" />
+
+</VBox>
