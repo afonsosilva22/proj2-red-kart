@@ -25,6 +25,11 @@ public class MainLayoutController {
         changePage("/com/example/desktop/rental-view.fxml");
     }
 
+    @FXML
+    private void showEmployeesPage() {
+        changePage("/com/example/desktop/employee-view.fxml");
+    }
+
     private void changePage(String fxmlPath) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));

@@ -50,7 +50,7 @@ public class Employee {
     @Column(name = "street", length = 150)
     private String street;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "postal_code")
     private PostalCode postalCode;
 

@@ -116,6 +116,10 @@ public class Employee {
         return postalCode;
     }
 
+    public String getPostalCodeValue() {
+        return postalCode != null ? postalCode.getPostalCode() : "";
+    }
+
     public void setPostalCode(PostalCode postalCode) {
         this.postalCode = postalCode;
     }

@@ -16,6 +16,24 @@ public class EmployeeService {
     private final Gson gson = new Gson();
     private final String BASE_URL = "http://localhost:8080/api/employees"; // Aligns with backend layout
 
+    public Employee create(Employee employee) throws Exception {
+        String json = gson.toJson(employee);
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + "/create"))
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(json))
+                .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        if (response.statusCode() >= 200 && response.statusCode() < 300) {
+            return gson.fromJson(response.body(), Employee.class);
+        } else {
+            throw new RuntimeException("Failed to save employee to database: " + response.body());
+        }
+    }
+
     public List<Employee> getAllEmployees() throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE_URL + "/get/all"))

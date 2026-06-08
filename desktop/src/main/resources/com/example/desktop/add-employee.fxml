@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.desktop.controllers.AddEmployeeController"
+      spacing="10"
+      prefWidth="420"
+      prefHeight="540"
+      style="-fx-padding: 20;">
+
+    <Label text="Register New Employee" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+
+    <TextField fx:id="nameField" promptText="Full Name" />
+    <TextField fx:id="nifField" promptText="NIF" />
+    <TextField fx:id="emailField" promptText="Email Address" />
+    <TextField fx:id="phoneField" promptText="Phone Number" />
+
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <DatePicker fx:id="birthdatePicker" promptText="Birthdate" HBox.hgrow="ALWAYS" prefWidth="240" />
+        <ComboBox fx:id="typeComboBox" promptText="Role Type" HBox.hgrow="ALWAYS" prefWidth="140" />
+    </HBox>
+
+    <Separator style="-fx-padding: 5 0 5 0;"/>
+    <Label text="Address Particulars" style="-fx-font-weight: bold; -fx-text-fill: #555;" />
+
+    <HBox spacing="10">
+        <TextField fx:id="streetField" promptText="Street" HBox.hgrow="ALWAYS" />
+        <TextField fx:id="doorNumberField" promptText="Door No." prefWidth="80" />
+    </HBox>
+
+    <HBox spacing="10">
+        <TextField fx:id="postalCodeField" promptText="Postal Code" prefWidth="120" />
+        <TextField fx:id="localityField" promptText="Locality" HBox.hgrow="ALWAYS" />
+    </HBox>
+
+    <Separator style="-fx-padding: 5 0 5 0;"/>
+
+    <Button text="Save Employee Record" onAction="#saveEmployee" prefWidth="400" style="-fx-font-weight: bold;" />
+
+</VBox>
