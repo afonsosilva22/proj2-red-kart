@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox spacing="15" alignment="CENTER" prefWidth="400" prefHeight="350"
+      xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.example.desktop.controllers.AddKartController">
+
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <Label text="Provision New Kart" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+
+    <GridPane hgap="10" vgap="10">
+        <columnConstraints>
+            <ColumnConstraints minWidth="120" />
+            <ColumnConstraints hgrow="ALWAYS" />
+        </columnConstraints>
+
+        <Label text="Kart Number:" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+        <TextField fx:id="txtKartNumber" promptText="e.g. K-01" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+
+        <Label text="Kart Type:" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+        <ComboBox fx:id="comboType" promptText="Select Type..." maxWidth="Infinity" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+
+        <Label text="Mileage (km):" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+        <TextField fx:id="txtMileage" promptText="0" GridPane.rowIndex="2" GridPane.columnIndex="1" />
+
+        <Label text="Manufacture Year:" GridPane.rowIndex="3" GridPane.columnIndex="0" />
+        <TextField fx:id="txtYear" promptText="YYYY" GridPane.rowIndex="3" GridPane.columnIndex="1" />
+
+        <Label text="Last Service:" GridPane.rowIndex="4" GridPane.columnIndex="0" />
+        <DatePicker fx:id="dpLastService" maxWidth="Infinity" GridPane.rowIndex="4" GridPane.columnIndex="1" />
+    </GridPane>
+
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Button text="Cancel" onAction="#cancel" />
+        <Button text="Save Kart" onAction="#saveKart" style="-fx-base: #5cb85c; -fx-text-fill: white; -fx-font-weight: bold;" />
+    </HBox>
+</VBox>

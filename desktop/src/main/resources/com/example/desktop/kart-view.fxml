@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="500.0" prefWidth="700.0"
+            xmlns="http://javafx.com/javafx/17.0.12"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.desktop.controllers.KartController">
+
+    <children>
+        <VBox spacing="10" AnchorPane.topAnchor="10"
+              AnchorPane.leftAnchor="10"
+              AnchorPane.rightAnchor="10"
+              AnchorPane.bottomAnchor="10">
+
+            <HBox spacing="10">
+                <Button text="Refresh Table" onAction="#loadKarts"/>
+                <Button text="Add New Kart" onAction="#addKart"/>
+                <Button text="Add Kart Type" onAction="#addKartType" style="-fx-base: #f0ad4e; -fx-text-fill: white; -fx-font-weight: bold;"/>
+            </HBox>
+
+            <TableView fx:id="table" prefHeight="300">
+                <columns>
+                    <TableColumn fx:id="colId" text="ID"/>
+                    <TableColumn fx:id="colKartNumber" text="Kart Number"/>
+                    <TableColumn fx:id="colType" text="Type Class"/>
+                    <TableColumn fx:id="colMileage" text="Mileage (km)"/>
+                    <TableColumn fx:id="colManufactureYear" text="Year"/>
+                    <TableColumn fx:id="colLastService" text="Last Service"/>
+                    <TableColumn fx:id="colStatus" text="Status"/>
+                </columns>
+                <columnResizePolicy>
+                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                </columnResizePolicy>
+            </TableView>
+
+            <VBox spacing="8" style="-fx-padding:10; -fx-border-color: lightgray; -fx-border-radius: 4; -fx-background-radius: 4;">
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <Label text="Kart Asset Details" style="-fx-font-size:16; -fx-font-weight:bold;" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Button fx:id="btnEdit" text="Edit Technical Data" onAction="#editKart" disable="true" style="-fx-font-weight: bold;" />
+                    <Button fx:id="btnDelete" text="Deactivate Asset" onAction="#deleteKart" disable="true" style="-fx-font-weight: bold; -fx-base: #d9534f; -fx-text-fill: white;" />
+                </HBox>
+
+                <GridPane hgap="20" vgap="6">
+                    <columnConstraints>
+                        <ColumnConstraints percentWidth="50.0"/>
+                        <ColumnConstraints percentWidth="50.0"/>
+                    </columnConstraints>
+                    <children>
+                        <Label fx:id="lblKartNumber" text="Kart Number: " GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                        <Label fx:id="lblType" text="Type Classification: " GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+                        <Label fx:id="lblMileage" text="Total Mileage: " GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                        <Label fx:id="lblManufactureYear" text="Manufacture Year: " GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+                        <Label fx:id="lblLastService" text="Last Serviced Date: " GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                        <Label fx:id="lblStatus" text="Operational Status: " GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                    </children>
+                </GridPane>
+            </VBox>
+
+        </VBox>
+    </children>
+</AnchorPane>

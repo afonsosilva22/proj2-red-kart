@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="500.0" prefWidth="700.0"
+            xmlns="http://javafx.com/javafx/17.0.12"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.desktop.controllers.EquipmentController">
+
+    <children>
+        <VBox spacing="10" AnchorPane.topAnchor="10" AnchorPane.leftAnchor="10"
+              AnchorPane.rightAnchor="10" AnchorPane.bottomAnchor="10">
+
+            <HBox spacing="10">
+                <Button text="Refresh Table" onAction="#loadEquipments"/>
+                <Button text="Add New Equipment" onAction="#addEquipment"/>
+            </HBox>
+
+            <TableView fx:id="table" prefHeight="300">
+                <columns>
+                    <TableColumn fx:id="colId" text="ID"/>
+                    <TableColumn fx:id="colType" text="Type"/>
+                    <TableColumn fx:id="colSize" text="Size"/>
+                    <TableColumn fx:id="colBrand" text="Brand"/>
+                    <TableColumn fx:id="colColor" text="Color"/>
+                    <TableColumn fx:id="colAcquisition" text="Acquisition Date"/>
+                    <TableColumn fx:id="colStatus" text="Status"/>
+                </columns>
+                <columnResizePolicy>
+                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                </columnResizePolicy>
+            </TableView>
+
+            <VBox spacing="8" style="-fx-padding:10; -fx-border-color: lightgray; -fx-border-radius: 4; -fx-background-radius: 4;">
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <Label text="Equipment Specification Details" style="-fx-font-size:16; -fx-font-weight:bold;" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Button fx:id="btnEdit" text="Edit Gear Data" onAction="#editEquipment" disable="true" style="-fx-font-weight: bold;" />
+                    <Button fx:id="btnDelete" text="Scrap Equipment" onAction="#deleteEquipment" disable="true" style="-fx-font-weight: bold; -fx-base: #d9534f; -fx-text-fill: white;" />
+                </HBox>
+
+                <GridPane hgap="20" vgap="6">
+                    <columnConstraints>
+                        <ColumnConstraints percentWidth="50.0"/>
+                        <ColumnConstraints percentWidth="50.0"/>
+                    </columnConstraints>
+                    <children>
+                        <Label fx:id="lblType" text="Equipment Type: " GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                        <Label fx:id="lblSize" text="Size Classification: " GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+                        <Label fx:id="lblBrand" text="Manufacturer Brand: " GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                        <Label fx:id="lblColor" text="Color Trim: " GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+                        <Label fx:id="lblAcquisition" text="Acquisition Date: " GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                        <Label fx:id="lblStatus" text="Operational Status: " GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                    </children>
+                </GridPane>
+            </VBox>
+
+        </VBox>
+    </children>
+</AnchorPane>

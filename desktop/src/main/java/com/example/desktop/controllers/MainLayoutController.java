@@ -30,6 +30,16 @@ public class MainLayoutController {
         changePage("/com/example/desktop/employee-view.fxml");
     }
 
+    @FXML
+    private void showKartsPage() {
+        changePage("/com/example/desktop/kart-view.fxml");
+    }
+
+    @FXML
+    private void showEquipmentsPage() {
+        changePage("/com/example/desktop/equipment-view.fxml");
+    }
+
     private void changePage(String fxmlPath) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));

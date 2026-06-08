@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox spacing="15" alignment="CENTER" prefWidth="400" prefHeight="280"
+      xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.example.desktop.controllers.AddEquipmentController">
+    <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+
+    <Label text="Add Inventory Equipment" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+
+    <GridPane hgap="10" vgap="10">
+        <columnConstraints>
+            <ColumnConstraints minWidth="120"/>
+            <ColumnConstraints hgrow="ALWAYS"/>
+        </columnConstraints>
+        <children>
+            <Label text="Type:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+            <ComboBox fx:id="comboType" maxWidth="Infinity" promptText="Select gear type..." GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+            <Label text="Size:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+            <ComboBox fx:id="comboSize" maxWidth="Infinity" promptText="Select size..." GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+            <Label text="Brand:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+            <TextField fx:id="txtBrand" promptText="e.g. Sparco" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+            <Label text="Color Trim:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+            <TextField fx:id="txtColor" promptText="e.g. Red/Black" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+        </children>
+    </GridPane>
+
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Button text="Cancel" onAction="#cancel"/>
+        <Button text="Save Asset" onAction="#saveEquipment" style="-fx-base: #5cb85c; -fx-text-fill: white; -fx-font-weight: bold;"/>
+    </HBox>
+</VBox>

@@ -33,7 +33,7 @@ public class AddEmployeeController {
     @FXML
     public void initialize() {
         // Standard karting center operational employment matrix assignments
-        typeComboBox.setItems(FXCollections.observableArrayList("manager", "mechanic", "marshal", "receptionist"));
+        typeComboBox.setItems(FXCollections.observableArrayList("manager", "mechanic", "receptionist"));
     }
 
     @FXML
