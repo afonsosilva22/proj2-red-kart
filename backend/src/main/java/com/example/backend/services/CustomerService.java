@@ -35,15 +35,11 @@ public class CustomerService {
     }
 
     @Transactional
-    public void delete(Integer id) {
-        if (!repository.existsById(id)) {
-            throw new RuntimeException("Customer not found with ID: " + id);
-        }
+    public Customer terminate(Integer id) {
+        Customer customer = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Customer not found with ID: " + id));
 
-        blacklistRepository.findAll().stream()
-                .filter(entry -> entry.getCustomer().getId().equals(id))
-                .forEach(entry -> blacklistRepository.deleteById(entry.getId()));
-
-        repository.deleteById(id);
+        customer.setStatus("inactive");
+        return repository.save(customer);
     }
 }

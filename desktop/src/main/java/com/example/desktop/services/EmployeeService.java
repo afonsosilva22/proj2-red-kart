@@ -49,4 +49,35 @@ public class EmployeeService {
             throw new RuntimeException("Failed to fetch employees: " + response.body());
         }
     }
+
+    public Employee update(Integer id, Employee employee) throws Exception {
+        String json = gson.toJson(employee);
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + "/update/" + id))
+                .header("Content-Type", "application/json")
+                .PUT(HttpRequest.BodyPublishers.ofString(json))
+                .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        if (response.statusCode() >= 200 && response.statusCode() < 300) {
+            return gson.fromJson(response.body(), Employee.class);
+        } else {
+            throw new RuntimeException("Failed to update employee: " + response.body());
+        }
+    }
+
+    public void terminate(Integer id) throws Exception {
+        java.net.http.HttpRequest request = java.net.http.HttpRequest.newBuilder()
+                .uri(java.net.URI.create(BASE_URL + "/terminate/" + id))
+                .PUT(java.net.http.HttpRequest.BodyPublishers.noBody())
+                .build();
+
+        java.net.http.HttpResponse<String> response = client.send(request, java.net.http.HttpResponse.BodyHandlers.ofString());
+
+        if (response.statusCode() < 200 || response.statusCode() >= 300) {
+            throw new RuntimeException("Failed to terminate employee: " + response.body());
+        }
+    }
 }

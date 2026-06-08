@@ -30,5 +30,4 @@ public class EquipmentService {
         equipment.setId(id);
         return repository.save(equipment);
     }
-
 }

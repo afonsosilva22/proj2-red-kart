@@ -23,7 +23,7 @@
                 <columns>
                     <TableColumn fx:id="colId" text="ID"/>
                     <TableColumn fx:id="colName" text="Name"/>
-                    <TableColumn fx:id="colRole" text="Role/Type"/>
+                    <TableColumn fx:id="colRole" text="Role"/>
                     <TableColumn fx:id="colEmail" text="Email"/>
                     <TableColumn fx:id="colPhone" text="Phone"/>
                     <TableColumn fx:id="colStatus" text="Status"/>
@@ -37,8 +37,8 @@
                 <HBox alignment="CENTER_LEFT" spacing="10">
                     <Label text="Employee Details" style="-fx-font-size:16; -fx-font-weight:bold;" />
                     <Region HBox.hgrow="ALWAYS" />
-                    <Button fx:id="btnEdit" text="Edit Employee" disable="true" style="-fx-font-weight: bold;" />
-                    <Button fx:id="btnDelete" text="Terminate" disable="true" style="-fx-font-weight: bold; -fx-base: #d9534f; -fx-text-fill: white;" />
+                    <Button fx:id="btnEdit" text="Edit Employee" onAction="#editEmployee" disable="true" style="-fx-font-weight: bold;" />
+                    <Button fx:id="btnDelete" text="Terminate" onAction="#terminateEmployee" disable="true" style="-fx-font-weight: bold; -fx-base: #d9534f; -fx-text-fill: white;" />
                 </HBox>
 
                 <GridPane hgap="20" vgap="6">

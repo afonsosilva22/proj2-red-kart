@@ -37,4 +37,9 @@ public class EmployeeController {
     public ResponseEntity<Employee> update(@PathVariable Integer id, @RequestBody Employee employee) {
         return ResponseEntity.ok(service.update(id, employee));
     }
+
+    @PutMapping("/terminate/{id}")
+    public ResponseEntity<Employee> terminate(@PathVariable Integer id) {
+        return ResponseEntity.ok(service.terminate(id));
+    }
 }

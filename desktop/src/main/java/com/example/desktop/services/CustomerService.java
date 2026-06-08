@@ -86,17 +86,16 @@ public class CustomerService {
         }
     }
 
-    public void delete(Integer id) throws Exception {
+    public void terminate(Integer id) throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(BASE_URL + "/delete/" + id))
-                .DELETE()
+                .uri(URI.create(BASE_URL + "/terminate/" + id))
+                .PUT(HttpRequest.BodyPublishers.noBody())
                 .build();
 
-        HttpResponse<String> response =
-                client.send(request, HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
         if (response.statusCode() < 200 || response.statusCode() >= 300) {
-            throw new RuntimeException("Failed to delete customer: " + response.body());
+            throw new RuntimeException("Failed to deactivate customer: " + response.body());
         }
     }
 }

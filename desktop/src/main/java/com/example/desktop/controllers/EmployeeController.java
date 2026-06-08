@@ -78,7 +78,15 @@ public class EmployeeController {
     @FXML
     public void loadEmployees() {
         try {
-            table.setItems(FXCollections.observableArrayList(service.getAllEmployees()));
+            java.util.List<Employee> allEmployees = service.getAllEmployees();
+
+            java.util.List<Employee> activeEmployees = allEmployees.stream()
+                    .filter(emp -> "active".equalsIgnoreCase(emp.getStatus()))
+                    .collect(java.util.stream.Collectors.toList());
+
+            table.setItems(FXCollections.observableArrayList(activeEmployees));
+            table.getSelectionModel().clearSelection();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -98,6 +106,64 @@ public class EmployeeController {
             loadEmployees(); // Refresh layout automatically on window close
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void editEmployee() {
+        Employee selectedEmployee = table.getSelectionModel().getSelectedItem();
+        if (selectedEmployee == null) return;
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/desktop/edit-employee.fxml"));
+            Parent root = loader.load();
+
+            // Pass the selected record straight into the sub-controller
+            EditEmployeeController controller = loader.getController();
+            controller.setEmployee(selectedEmployee);
+
+            Stage stage = new Stage();
+            stage.setTitle("Edit Employee Profile");
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
+
+            loadEmployees(); // Refreshes table view automatically after saving changes
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // In com.example.desktop.controllers.EmployeeController
+
+    @FXML
+    private void terminateEmployee() {
+        Employee selectedEmployee = table.getSelectionModel().getSelectedItem();
+        if (selectedEmployee == null) return;
+
+        // Safety verification popup
+        javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Terminate Employment Record");
+        alert.setHeaderText("Set " + selectedEmployee.getName() + " to Inactive?");
+        alert.setContentText("This will revoke their active status in the system, but their historical records will remain intact.");
+
+        // Wait for user confirmation
+        if (alert.showAndWait().orElse(javafx.scene.control.ButtonType.CANCEL) == javafx.scene.control.ButtonType.OK) {
+            try {
+                // Call API layer soft-delete
+                service.terminate(selectedEmployee.getId());
+
+                // Refresh grid automatically
+                loadEmployees();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+
+                javafx.scene.control.Alert errorAlert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.ERROR);
+                errorAlert.setTitle("Update Error");
+                errorAlert.setHeaderText("Action Failed");
+                errorAlert.setContentText("Could not update the employee status. Check your server connection.");
+                errorAlert.showAndWait();
+            }
         }
     }
 }

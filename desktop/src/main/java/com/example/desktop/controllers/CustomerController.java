@@ -106,11 +106,16 @@ public class CustomerController {
     @FXML
     public void loadCustomers() {
         try {
-            table.setItems(
-                    FXCollections.observableArrayList(
-                            service.getAllCustomers()
-                    )
-            );
+            java.util.List<Customer> allCustomers = service.getAllCustomers();
+
+            java.util.List<Customer> filteredCustomers = allCustomers.stream()
+                    .filter(customer -> "active".equalsIgnoreCase(customer.getStatus())
+                            || "suspended".equalsIgnoreCase(customer.getStatus()))
+                    .collect(java.util.stream.Collectors.toList());
+
+            table.setItems(FXCollections.observableArrayList(filteredCustomers));
+            table.getSelectionModel().clearSelection();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -213,31 +218,35 @@ public class CustomerController {
         }
     }
 
+    // Add this method to com.example.desktop.controllers.CustomerController
     @FXML
     private void deleteCustomer() {
         Customer selected = table.getSelectionModel().getSelectedItem();
         if (selected == null) return;
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Delete Customer");
-        alert.setHeaderText("Permanently delete " + selected.getName() + "?");
-        alert.setContentText("Warning: This will permanently wipe this record and all associated history data from the database. This action cannot be undone.");
+        alert.setTitle("Deactivate Customer Account");
+        alert.setHeaderText("Set " + selected.getName() + " to Inactive?");
+        alert.setContentText("This updates their profile status to 'inactive'. Their historical data and blacklist tracking remain untouched.");
 
         Optional<ButtonType> result = alert.showAndWait();
-        if (result.isPresent() && bondMatchingCheck(result.get())) {
+        if (result.isPresent() && result.get() == ButtonType.OK) {
             try {
-                service.delete(selected.getId());
+                // Execute network action
+                service.terminate(selected.getId());
 
-                table.getSelectionModel().clearSelection();
-
+                // Refresh table list view data container
                 loadCustomers();
+
             } catch (Exception e) {
                 e.printStackTrace();
+
+                Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                errorAlert.setTitle("Connection Error");
+                errorAlert.setHeaderText("Action Interrupted");
+                errorAlert.setContentText("Could not deactivate customer. Verify backend connectivity logs.");
+                errorAlert.showAndWait();
             }
         }
-    }
-
-    private boolean bondMatchingCheck(ButtonType type) {
-        return type == ButtonType.OK;
     }
 }
