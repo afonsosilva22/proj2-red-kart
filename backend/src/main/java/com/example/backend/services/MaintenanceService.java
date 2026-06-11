@@ -25,4 +25,9 @@ public class MaintenanceService {
         return repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Maintenance not found"));
     }
+
+    public Maintenance update(Integer id, Maintenance maintenance) {
+        maintenance.setId(id);
+        return repository.save(maintenance);
+    }
 }

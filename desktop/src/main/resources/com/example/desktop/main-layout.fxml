@@ -30,6 +30,9 @@
 
             <Button text="Tracks" onAction="#showTracksPage"
                     style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14px; -fx-alignment: BASELINE_LEFT;" prefWidth="180"/>
+
+            <Button text="Maintenances" onAction="#showMaintenancesPage"
+                    style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14px; -fx-alignment: BASELINE_LEFT;" prefWidth="180"/>
         </VBox>
     </left>
 

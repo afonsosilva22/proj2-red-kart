@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox spacing="15" alignment="CENTER" prefWidth="450" prefHeight="450"
+      xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.example.desktop.controllers.AddMaintenanceController">
+
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <Label text="Open Maintenance Ticket" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+
+    <GridPane hgap="10" vgap="12">
+        <columnConstraints>
+            <ColumnConstraints minWidth="110"/>
+            <ColumnConstraints hgrow="ALWAYS"/>
+        </columnConstraints>
+        <children>
+            <Label text="Ticket Type:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+            <ComboBox fx:id="comboType" promptText="Select Type..." maxWidth="Infinity" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+            <Label text="Target Track:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+            <ComboBox fx:id="comboTrack" promptText="Select a track..." maxWidth="Infinity" disable="true" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+            <Label text="Target Kart:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+            <ComboBox fx:id="comboKart" promptText="Select a kart..." maxWidth="Infinity" disable="true" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+            <Label text="Priority Level:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+            <ComboBox fx:id="comboPriority" maxWidth="Infinity" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+            <Label text="Assign Mechanic:" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+            <ComboBox fx:id="comboEmployee" promptText="Unassigned" maxWidth="Infinity" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+
+            <Label text="Issue Description:" GridPane.rowIndex="5" GridPane.columnIndex="0" GridPane.valignment="TOP"/>
+            <TextArea fx:id="txtDescription" promptText="Describe the issue or maintenance required..." prefRowCount="4" wrapText="true" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+        </children>
+    </GridPane>
+
+    <Region VBox.vgrow="ALWAYS" />
+
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Button text="Cancel" onAction="#cancel"/>
+        <Button text="Create Ticket" onAction="#saveMaintenance" style="-fx-base: #5cb85c; -fx-text-fill: white; -fx-font-weight: bold;"/>
+    </HBox>
+</VBox>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="600.0" prefWidth="800.0"
+            xmlns="http://javafx.com/javafx/17.0.12"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.desktop.controllers.MaintenanceController">
+
+    <children>
+        <VBox spacing="10" AnchorPane.topAnchor="10" AnchorPane.leftAnchor="10"
+              AnchorPane.rightAnchor="10" AnchorPane.bottomAnchor="10">
+
+            <HBox spacing="10">
+                <Button text="Refresh Table" onAction="#loadMaintenances"/>
+                <Button text="Open Maintenance Ticket" onAction="#addMaintenance" style="-fx-base: #f0ad4e; -fx-text-fill: white; -fx-font-weight: bold;"/>
+            </HBox>
+
+            <TableView fx:id="table" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="colId" text="ID" prefWidth="50"/>
+                    <TableColumn fx:id="colType" text="Type" prefWidth="80"/>
+                    <TableColumn fx:id="colTarget" text="Target Object" prefWidth="150"/>
+                    <TableColumn fx:id="colPriority" text="Priority" prefWidth="100"/>
+                    <TableColumn fx:id="colStatus" text="Status" prefWidth="120"/>
+                    <TableColumn fx:id="colOpenDate" text="Opened On" prefWidth="120"/>
+                </columns>
+            </TableView>
+
+            <VBox spacing="8" style="-fx-padding:10; -fx-border-color: lightgray; -fx-border-radius: 4; -fx-background-radius: 4;">
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <Label text="Maintenance Order Details" style="-fx-font-size:16; -fx-font-weight:bold;" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Button fx:id="btnEdit" text="Update Ticket" onAction="#editMaintenance" disable="true" style="-fx-font-weight: bold;" />
+                </HBox>
+
+                <GridPane hgap="20" vgap="8">
+                    <columnConstraints>
+                        <ColumnConstraints percentWidth="50.0"/>
+                        <ColumnConstraints percentWidth="50.0"/>
+                    </columnConstraints>
+                    <children>
+                        <Label fx:id="lblDescription" text="Description: " GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="2" wrapText="true"/>
+                        <Label fx:id="lblEmployee" text="Assigned Tech: " GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                        <Label fx:id="lblCompletion" text="Completion Date: " GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                    </children>
+                </GridPane>
+            </VBox>
+
+        </VBox>
+    </children>
+</AnchorPane>

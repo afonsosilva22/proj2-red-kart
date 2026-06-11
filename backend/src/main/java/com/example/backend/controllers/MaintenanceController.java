@@ -32,4 +32,9 @@ public class MaintenanceController {
     public ResponseEntity<Maintenance> getById(@PathVariable Integer id) {
         return ResponseEntity.ok(service.getById(id));
     }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Maintenance> update(@PathVariable Integer id, @RequestBody Maintenance maintenance) {
+        return ResponseEntity.ok(service.update(id, maintenance));
+    }
 }

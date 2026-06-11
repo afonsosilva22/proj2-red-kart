@@ -45,6 +45,11 @@ public class MainLayoutController {
         changePage("/com/example/desktop/track-view.fxml");
     }
 
+    @FXML
+    private void showMaintenancesPage() {
+        changePage("/com/example/desktop/maintenance-view.fxml");
+    }
+
     private void changePage(String fxmlPath) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
