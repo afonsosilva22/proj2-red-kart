@@ -26,16 +26,17 @@
 
     <ComboBox fx:id="typeComboBox" promptText="Select Rental Type ('track' or 'kart')" prefWidth="400" />
 
+    <Label text="Rental Date:" style="-fx-font-size: 12px; -fx-text-fill: #666;" />
+    <DatePicker fx:id="rentalDatePicker" promptText="Select Date" prefWidth="400" />
+
     <Label text="Planned Start Time:" style="-fx-font-size: 12px; -fx-text-fill: #666;" />
     <HBox spacing="10" alignment="CENTER_LEFT">
-        <DatePicker fx:id="startPicker" promptText="Start Date" HBox.hgrow="ALWAYS" prefWidth="220" />
         <ComboBox fx:id="startHourCombo" promptText="HH" prefWidth="80" />
         <ComboBox fx:id="startMinuteCombo" promptText="MM" prefWidth="80" />
     </HBox>
 
     <Label text="Planned End Time:" style="-fx-font-size: 12px; -fx-text-fill: #666;" />
     <HBox spacing="10" alignment="CENTER_LEFT">
-        <DatePicker fx:id="endPicker" promptText="End Date" HBox.hgrow="ALWAYS" prefWidth="220" />
         <ComboBox fx:id="endHourCombo" promptText="HH" prefWidth="80" />
         <ComboBox fx:id="endMinuteCombo" promptText="MM" prefWidth="80" />
     </HBox>
@@ -45,7 +46,7 @@
 
     <HBox spacing="10">
         <TextField fx:id="basePriceField" promptText="Base Price (e.g. 25.00)" HBox.hgrow="ALWAYS" />
-        <TextField fx:id="discountField" promptText="Discount Decimal (e.g. 0.00)" HBox.hgrow="ALWAYS" />
+        <TextField fx:id="discountField" promptText="Discount % (e.g. 40)" HBox.hgrow="ALWAYS" />
     </HBox>
 
     <Separator style="-fx-padding: 5 0 5 0;"/>

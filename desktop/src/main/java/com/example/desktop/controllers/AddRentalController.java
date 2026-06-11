@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,12 +28,12 @@ public class AddRentalController {
     @FXML private ComboBox<Employee> employeeComboBox;
     @FXML private ComboBox<String> typeComboBox;
 
-    // Time Dropdown Adjustments
-    @FXML private DatePicker startPicker;
+    // Single Date Picker
+    @FXML private DatePicker rentalDatePicker;
+
+    // Time Components
     @FXML private ComboBox<String> startHourCombo;
     @FXML private ComboBox<String> startMinuteCombo;
-
-    @FXML private DatePicker endPicker;
     @FXML private ComboBox<String> endHourCombo;
     @FXML private ComboBox<String> endMinuteCombo;
 
@@ -63,7 +64,7 @@ public class AddRentalController {
         startMinuteCombo.setItems(minutes);
         endMinuteCombo.setItems(minutes);
 
-        // Pre-select default times to save clicks (Optional)
+        // Pre-select default times to save clicks
         startHourCombo.setValue("12");
         startMinuteCombo.setValue("00");
         endHourCombo.setValue("13");
@@ -84,7 +85,7 @@ public class AddRentalController {
             e.printStackTrace();
         }
 
-        // 3. Set Up Converters for display naming conventions
+        // 3. Set Up Converters
         customerComboBox.setConverter(new StringConverter<Customer>() {
             @Override public String toString(Customer c) { return c == null ? "" : c.getName() + " (ID: " + c.getId() + ")"; }
             @Override public Customer fromString(String s) { return null; }
@@ -103,11 +104,11 @@ public class AddRentalController {
             Employee selectedEmployee = employeeComboBox.getSelectionModel().getSelectedItem();
             String selectedType = typeComboBox.getSelectionModel().getSelectedItem();
 
-            LocalDate startDate = startPicker.getValue();
+            // Pull from the single DatePicker
+            LocalDate rentalDate = rentalDatePicker.getValue();
+
             String startH = startHourCombo.getValue();
             String startM = startMinuteCombo.getValue();
-
-            LocalDate endDate = endPicker.getValue();
             String endH = endHourCombo.getValue();
             String endM = endMinuteCombo.getValue();
 
@@ -116,8 +117,8 @@ public class AddRentalController {
                 showErrorAlert("Validation Error", "Please ensure all dropdown selections are filled.");
                 return;
             }
-            if (startDate == null || startH == null || startM == null || endDate == null || endH == null || endM == null) {
-                showErrorAlert("Validation Error", "Please specify complete Date and Time windows.");
+            if (rentalDate == null || startH == null || startM == null || endH == null || endM == null) {
+                showErrorAlert("Validation Error", "Please specify a Date and complete Time windows.");
                 return;
             }
 
@@ -127,9 +128,9 @@ public class AddRentalController {
             rental.setType(selectedType);
             rental.setStatus("scheduled");
 
-            // Assembly of precise ISO-8601 Instant Format: YYYY-MM-DDTHH:MM:SSZ
-            String startTimestamp = startDate.toString() + "T" + startH + ":" + startM + ":00Z";
-            String endTimestamp = endDate.toString() + "T" + endH + ":" + endM + ":00Z";
+            // Build ISO-8601 strings using the same single rentalDate
+            String startTimestamp = rentalDate.toString() + "T" + startH + ":" + startM + ":00Z";
+            String endTimestamp = rentalDate.toString() + "T" + endH + ":" + endM + ":00Z";
 
             rental.setPlannedStartDatetime(startTimestamp);
             rental.setPlannedEndDatetime(endTimestamp);
@@ -137,16 +138,24 @@ public class AddRentalController {
             // Financial Parsing
             rental.setBasePrice(new BigDecimal(basePriceField.getText().trim()));
             String discountRaw = discountField.getText().trim();
-            rental.setDiscount(!discountRaw.isEmpty() ? new BigDecimal(discountRaw) : BigDecimal.ZERO);
+
+            if (!discountRaw.isEmpty()) {
+                // Takes the whole number (e.g. 40) and divides by 100 to get 0.40
+                BigDecimal discountPercentage = new BigDecimal(discountRaw);
+                BigDecimal decimalValue = discountPercentage.divide(new BigDecimal("100"), 2, RoundingMode.HALF_UP);
+                rental.setDiscount(decimalValue);
+            } else {
+                rental.setDiscount(BigDecimal.ZERO);
+            }
 
             rentalService.create(rental);
 
-            // Close Modal View Container Window
+            // Close Modal Window
             Stage stage = (Stage) basePriceField.getScene().getWindow();
             stage.close();
 
         } catch (NumberFormatException e) {
-            showErrorAlert("Input Error", "Please check pricing or layout numerical input values.");
+            showErrorAlert("Input Error", "Please ensure Price and Discount fields contain valid numbers.");
         } catch (Exception e) {
             e.printStackTrace();
             showErrorAlert("System Error", "Failed to compile rental record: " + e.getMessage());
