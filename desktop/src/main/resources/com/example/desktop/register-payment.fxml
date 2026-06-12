@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.desktop.controllers.RegisterPaymentController"
+      spacing="15"
+      prefWidth="380"
+      prefHeight="340"
+      style="-fx-padding: 20;">
+
+    <Label text="Register Rental Payment" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+    <Separator/>
+
+    <GridPane hgap="10" vgap="12">
+        <columnConstraints>
+            <ColumnConstraints prefWidth="120"/>
+            <ColumnConstraints prefWidth="200" hgrow="ALWAYS"/>
+        </columnConstraints>
+
+        <Label text="Rental ID:" GridPane.rowIndex="0" GridPane.columnIndex="0" style="-fx-text-fill: #666;"/>
+        <Label fx:id="lblRentalId" text="N/A" GridPane.rowIndex="0" GridPane.columnIndex="1" style="-fx-font-weight: bold;"/>
+
+        <Label text="Amount Due (€):" GridPane.rowIndex="1" GridPane.columnIndex="0" style="-fx-text-fill: #666;"/>
+        <TextField fx:id="txtAmountPaid" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+
+        <Label text="IVA Rate (%):" GridPane.rowIndex="2" GridPane.columnIndex="0" style="-fx-text-fill: #666;"/>
+        <TextField fx:id="txtIvaRate" text="23.00" GridPane.rowIndex="2" GridPane.columnIndex="1" />
+
+        <Label text="Payment Method:" GridPane.rowIndex="3" GridPane.columnIndex="0" style="-fx-text-fill: #666;"/>
+        <ComboBox fx:id="comboMethod" promptText="Select Method" GridPane.rowIndex="3" GridPane.columnIndex="1" prefWidth="200"/>
+    </GridPane>
+
+    <Separator style="-fx-padding: 10 0 5 0;"/>
+
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Button text="Cancel" onAction="#closeWindow"/>
+        <Button text="Confirm Payment" onAction="#processPayment" prefWidth="140" style="-fx-font-weight: bold; -fx-base: #5cb85c; -fx-text-fill: white;" />
+    </HBox>
+
+</VBox>

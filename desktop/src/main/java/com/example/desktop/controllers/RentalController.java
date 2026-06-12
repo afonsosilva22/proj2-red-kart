@@ -38,6 +38,7 @@ public class RentalController {
     @FXML private Label lblActualEnd;
     @FXML private Label lblComplaint;
     @FXML private Button btnEdit;
+    @FXML private Button btnRegisterPayment;
     @FXML private Button btnDelete;
 
     private final RentalService rentalService = new RentalService();
@@ -87,6 +88,12 @@ public class RentalController {
             boolean noSelection = (newVal == null);
             btnEdit.setDisable(noSelection);
             btnDelete.setDisable(noSelection);
+
+            if (newVal != null && "scheduled".equalsIgnoreCase(newVal.getStatus())) {
+                btnRegisterPayment.setDisable(false);
+            } else {
+                btnRegisterPayment.setDisable(true);
+            }
         });
 
         loadRentals();
@@ -158,6 +165,29 @@ public class RentalController {
 
             Stage stage = new Stage();
             stage.setTitle("Edit Rental Session");
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
+
+            loadRentals();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void registerPayment() {
+        Rental selected = rentalTable.getSelectionModel().getSelectedItem();
+        if (selected == null) return;
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/desktop/register-payment.fxml"));
+            Parent root = loader.load();
+
+            RegisterPaymentController controller = loader.getController();
+            controller.setRentalContext(selected);
+
+            Stage stage = new Stage();
+            stage.setTitle("Process Rental Payment");
             stage.setScene(new Scene(root));
             stage.showAndWait();
 
