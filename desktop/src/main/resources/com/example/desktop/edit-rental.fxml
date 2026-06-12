@@ -5,26 +5,32 @@
 
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.example.desktop.controllers.AddRentalController"
+      fx:controller="com.example.desktop.controllers.EditRentalController"
       spacing="10"
       prefWidth="440"
-      prefHeight="580"
+      prefHeight="650"
       style="-fx-padding: 20;">
 
-    <Label text="Add New Rental Session" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+    <Label text="Modify Rental Session" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
 
     <Separator style="-fx-padding: 2 0 5 0;"/>
+    <Label text="Status &amp; Core Classification" style="-fx-font-weight: bold; -fx-text-fill: #555;" />
+
+    <HBox spacing="10">
+        <ComboBox fx:id="statusComboBox" promptText="Session Status" HBox.hgrow="ALWAYS" prefWidth="200" />
+        <ComboBox fx:id="typeComboBox" promptText="Rental Type" HBox.hgrow="ALWAYS" prefWidth="200" />
+    </HBox>
+
+    <Separator style="-fx-padding: 5 0 5 0;"/>
     <Label text="Account Affiliations" style="-fx-font-weight: bold; -fx-text-fill: #555;" />
 
     <HBox spacing="10" alignment="CENTER_LEFT">
-        <ComboBox fx:id="customerComboBox" promptText="Select Active Customer" HBox.hgrow="ALWAYS" prefWidth="200" />
-        <ComboBox fx:id="employeeComboBox" promptText="Select Active Employee" HBox.hgrow="ALWAYS" prefWidth="200" />
+        <ComboBox fx:id="customerComboBox" promptText="Select Customer" HBox.hgrow="ALWAYS" prefWidth="200" />
+        <ComboBox fx:id="employeeComboBox" promptText="Select Employee" HBox.hgrow="ALWAYS" prefWidth="200" />
     </HBox>
 
     <Separator style="-fx-padding: 5 0 5 0;"/>
     <Label text="Rental Logistics" style="-fx-font-weight: bold; -fx-text-fill: #555;" />
-
-    <ComboBox fx:id="typeComboBox" promptText="Select Rental Type ('track' or 'kart')" prefWidth="400" />
 
     <Label text="Rental Date:" style="-fx-font-size: 12px; -fx-text-fill: #666;" />
     <DatePicker fx:id="rentalDatePicker" promptText="Select Date" prefWidth="400" />
@@ -42,15 +48,20 @@
     </HBox>
 
     <Separator style="-fx-padding: 5 0 5 0;"/>
-    <Label text="Financial Details" style="-fx-font-weight: bold; -fx-text-fill: #555;" />
+    <Label text="Financials &amp; Incidents" style="-fx-font-weight: bold; -fx-text-fill: #555;" />
 
     <HBox spacing="10">
-        <TextField fx:id="basePriceField" promptText="Base Price (e.g. 25.00)" HBox.hgrow="ALWAYS" />
+        <TextField fx:id="basePriceField" promptText="Base Price" HBox.hgrow="ALWAYS" />
         <TextField fx:id="discountField" promptText="Discount % (e.g. 40)" HBox.hgrow="ALWAYS" />
     </HBox>
 
+    <TextField fx:id="txtComplaint" promptText="Customer Complaints / Incidents (Optional)" prefWidth="400" />
+
     <Separator style="-fx-padding: 5 0 5 0;"/>
 
-    <Button text="Save Rental Session" onAction="#saveRental" prefWidth="400" style="-fx-font-weight: bold;" />
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Button text="Cancel" onAction="#cancel"/>
+        <Button text="Save Changes" onAction="#updateRental" prefWidth="150" style="-fx-font-weight: bold; -fx-base: #0275d8; -fx-text-fill: white;" />
+    </HBox>
 
 </VBox>

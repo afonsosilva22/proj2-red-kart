@@ -25,4 +25,9 @@ public class RentalService {
         return repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Rental not found"));
     }
+
+    public Rental update(Integer id, Rental rental) {
+        rental.setId(id);
+        return repository.save(rental);
+    }
 }

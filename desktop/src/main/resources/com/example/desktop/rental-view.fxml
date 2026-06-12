@@ -38,8 +38,8 @@
                 <HBox alignment="CENTER_LEFT" spacing="10">
                     <Label text="Rental Details" style="-fx-font-size:16; -fx-font-weight:bold;" />
                     <Region HBox.hgrow="ALWAYS" />
-                    <Button fx:id="btnEdit" text="Edit Rental" disable="true" style="-fx-font-weight: bold;" />
-                    <Button fx:id="btnDelete" text="Delete" disable="true" style="-fx-font-weight: bold; -fx-base: #d9534f; -fx-text-fill: white;" />
+                    <Button fx:id="btnEdit" text="Edit Rental" onAction="#editRental" disable="true" style="-fx-font-weight: bold;" />
+                    <Button fx:id="btnDelete" text="Delete" onAction="#deleteRental" disable="true" style="-fx-font-weight: bold; -fx-base: #d9534f; -fx-text-fill: white;" />
                 </HBox>
 
                 <Label fx:id="lblBasePrice" text="Base Price: "/>

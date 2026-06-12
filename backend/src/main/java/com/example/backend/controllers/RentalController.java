@@ -32,4 +32,9 @@ public class RentalController {
     public ResponseEntity<Rental> getById(@PathVariable Integer id) {
         return ResponseEntity.ok(service.getById(id));
     }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Rental> update(@PathVariable Integer id, @RequestBody Rental rental) {
+        return ResponseEntity.ok(service.update(id, rental));
+    }
 }

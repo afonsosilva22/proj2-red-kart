@@ -18,17 +18,16 @@ public class RentalService {
     private final String BASE_URL = "http://localhost:8080/api/rentals";
 
     public Rental create(Rental rental) throws Exception {
-
         String json = gson.toJson(rental);
 
-        java.net.http.HttpRequest request = java.net.http.HttpRequest.newBuilder()
-                .uri(java.net.URI.create(BASE_URL + "/create"))
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + "/create"))
                 .header("Content-Type", "application/json")
-                .POST(java.net.http.HttpRequest.BodyPublishers.ofString(json))
+                .POST(HttpRequest.BodyPublishers.ofString(json))
                 .build();
 
-        java.net.http.HttpResponse<String> response =
-                client.send(request, java.net.http.HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response =
+                client.send(request, HttpResponse.BodyHandlers.ofString());
 
         if (response.statusCode() >= 200 && response.statusCode() < 300) {
             return gson.fromJson(response.body(), Rental.class);
@@ -50,6 +49,24 @@ public class RentalService {
             return gson.fromJson(response.body(), listType);
         } else {
             throw new RuntimeException("Failed to fetch rentals from backend: " + response.body());
+        }
+    }
+
+    public Rental update(Integer id, Rental rental) throws Exception {
+        String json = gson.toJson(rental);
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + "/update/" + id))
+                .header("Content-Type", "application/json")
+                .PUT(HttpRequest.BodyPublishers.ofString(json))
+                .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        if (response.statusCode() >= 200 && response.statusCode() < 300) {
+            return gson.fromJson(response.body(), Rental.class);
+        } else {
+            throw new RuntimeException("Failed to update rental record: " + response.body());
         }
     }
 }
