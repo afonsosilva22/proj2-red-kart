@@ -18,6 +18,7 @@ import javafx.util.StringConverter;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,10 +29,8 @@ public class AddRentalController {
     @FXML private ComboBox<Employee> employeeComboBox;
     @FXML private ComboBox<String> typeComboBox;
 
-    // Single Date Picker
     @FXML private DatePicker rentalDatePicker;
 
-    // Time Components
     @FXML private ComboBox<String> startHourCombo;
     @FXML private ComboBox<String> startMinuteCombo;
     @FXML private ComboBox<String> endHourCombo;
@@ -48,14 +47,13 @@ public class AddRentalController {
     public void initialize() {
         typeComboBox.setItems(FXCollections.observableArrayList("track", "kart"));
 
-        // 1. Generate Hour and Minute lists
         ObservableList<String> hours = FXCollections.observableArrayList();
         for (int i = 0; i < 24; i++) {
             hours.add(String.format("%02d", i));
         }
 
         ObservableList<String> minutes = FXCollections.observableArrayList();
-        for (int i = 0; i < 60; i += 5) { // 5-minute heat scheduling steps
+        for (int i = 0; i < 60; i += 5) {
             minutes.add(String.format("%02d", i));
         }
 
@@ -64,13 +62,11 @@ public class AddRentalController {
         startMinuteCombo.setItems(minutes);
         endMinuteCombo.setItems(minutes);
 
-        // Pre-select default times to save clicks
         startHourCombo.setValue("12");
         startMinuteCombo.setValue("00");
         endHourCombo.setValue("13");
         endMinuteCombo.setValue("00");
 
-        // 2. Fetch Active Customers & Employees
         try {
             List<Customer> activeCustomers = customerService.getAllCustomers().stream()
                     .filter(c -> "active".equalsIgnoreCase(c.getStatus()))
@@ -85,7 +81,6 @@ public class AddRentalController {
             e.printStackTrace();
         }
 
-        // 3. Set Up Converters
         customerComboBox.setConverter(new StringConverter<Customer>() {
             @Override public String toString(Customer c) { return c == null ? "" : c.getName() + " (ID: " + c.getId() + ")"; }
             @Override public Customer fromString(String s) { return null; }
@@ -104,7 +99,6 @@ public class AddRentalController {
             Employee selectedEmployee = employeeComboBox.getSelectionModel().getSelectedItem();
             String selectedType = typeComboBox.getSelectionModel().getSelectedItem();
 
-            // Pull from the single DatePicker
             LocalDate rentalDate = rentalDatePicker.getValue();
 
             String startH = startHourCombo.getValue();
@@ -112,7 +106,6 @@ public class AddRentalController {
             String endH = endHourCombo.getValue();
             String endM = endMinuteCombo.getValue();
 
-            // Validation Checks
             if (selectedCustomer == null || selectedEmployee == null || selectedType == null) {
                 showErrorAlert("Validation Error", "Please ensure all dropdown selections are filled.");
                 return;
@@ -122,25 +115,62 @@ public class AddRentalController {
                 return;
             }
 
+            // Build ISO-8601 strings
+            String startTimestamp = rentalDate.toString() + "T" + startH + ":" + startM + ":00Z";
+            String endTimestamp = rentalDate.toString() + "T" + endH + ":" + endM + ":00Z";
+
+            // Parse to Instant for comparison
+            Instant newStart = Instant.parse(startTimestamp);
+            Instant newEnd = Instant.parse(endTimestamp);
+
+            if (!newStart.isBefore(newEnd)) {
+                showErrorAlert("Validation Error", "Planned Start Time must be earlier than the End Time.");
+                return;
+            }
+
+            // ─── NEW: OVERLAP & EXCLUSIVITY VALIDATION ───
+            List<Rental> allRentals = rentalService.getAllRentals();
+            for (Rental existing : allRentals) {
+                // Ignore cancelled or completed sessions
+                if (existing.getStatus() != null &&
+                        (existing.getStatus().equalsIgnoreCase("cancelled") || existing.getStatus().equalsIgnoreCase("finished"))) {
+                    continue;
+                }
+
+                if (existing.getPlannedStartDatetime() == null || existing.getPlannedEndDatetime() == null) {
+                    continue;
+                }
+
+                Instant extStart = Instant.parse(existing.getPlannedStartDatetime());
+                Instant extEnd = Instant.parse(existing.getPlannedEndDatetime());
+
+                // Overlap formula: (Start_A < End_B) AND (Start_B < End_A)
+                if (newStart.isBefore(extEnd) && extStart.isBefore(newEnd)) {
+                    // Block booking if either the new rental or the existing overlapping rental is a 'track'
+                    if ("track".equalsIgnoreCase(selectedType) || "track".equalsIgnoreCase(existing.getType())) {
+                        showErrorAlert(
+                                "Scheduling Conflict",
+                                "The selected time window overlaps with an existing " + existing.getType().toUpperCase() +
+                                        " session (ID: " + existing.getId() + "). Exclusive track rules apply."
+                        );
+                        return; // Halt execution and don't save
+                    }
+                }
+            }
+            // ─────────────────────────────────────────────
+
             Rental rental = new Rental();
             rental.setCustomer(selectedCustomer);
             rental.setEmployee(selectedEmployee);
             rental.setType(selectedType);
             rental.setStatus("scheduled");
-
-            // Build ISO-8601 strings using the same single rentalDate
-            String startTimestamp = rentalDate.toString() + "T" + startH + ":" + startM + ":00Z";
-            String endTimestamp = rentalDate.toString() + "T" + endH + ":" + endM + ":00Z";
-
             rental.setPlannedStartDatetime(startTimestamp);
             rental.setPlannedEndDatetime(endTimestamp);
 
-            // Financial Parsing
             rental.setBasePrice(new BigDecimal(basePriceField.getText().trim()));
             String discountRaw = discountField.getText().trim();
 
             if (!discountRaw.isEmpty()) {
-                // Takes the whole number (e.g. 40) and divides by 100 to get 0.40
                 BigDecimal discountPercentage = new BigDecimal(discountRaw);
                 BigDecimal decimalValue = discountPercentage.divide(new BigDecimal("100"), 2, RoundingMode.HALF_UP);
                 rental.setDiscount(decimalValue);
@@ -150,7 +180,6 @@ public class AddRentalController {
 
             rentalService.create(rental);
 
-            // Close Modal Window
             Stage stage = (Stage) basePriceField.getScene().getWindow();
             stage.close();
 
