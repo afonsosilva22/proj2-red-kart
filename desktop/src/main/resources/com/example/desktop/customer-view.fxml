@@ -21,15 +21,18 @@
                 <Button text="Add Customer" onAction="#addCustomer"/>
             </HBox>
 
-            <TableView fx:id="table" prefHeight="300">
+            <TableView fx:id="table" VBox.vgrow="ALWAYS" prefHeight="300">
                 <columns>
-                    <TableColumn fx:id="colId" text="ID"/>
-                    <TableColumn fx:id="colName" text="Name"/>
-                    <TableColumn fx:id="colBirthDate" text="Birth Date"/>
-                    <TableColumn fx:id="colEmail" text="Email"/>
-                    <TableColumn fx:id="colPhone" text="Phone"/>
-                    <TableColumn fx:id="colStatus" text="Status"/>
+                    <TableColumn fx:id="colId" text="ID" prefWidth="50"/>
+                    <TableColumn fx:id="colName" text="Name" prefWidth="150"/>
+                    <TableColumn fx:id="colBirthDate" text="Birth Date" prefWidth="110"/>
+                    <TableColumn fx:id="colEmail" text="Email" prefWidth="180"/>
+                    <TableColumn fx:id="colPhone" text="Phone" prefWidth="110"/>
+                    <TableColumn fx:id="colStatus" text="Status" prefWidth="100"/>
                 </columns>
+                <columnResizePolicy>
+                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN" />
+                </columnResizePolicy>
             </TableView>
 
             <VBox spacing="8" style="-fx-padding:10; -fx-border-color: lightgray; -fx-border-radius: 4; -fx-background-radius: 4;">
@@ -65,11 +68,20 @@
                             style="-fx-font-weight: bold; -fx-base: #d9534f; -fx-text-fill: white;" />
                 </HBox>
 
-                <Label fx:id="lblName" text="Name: "/>
-                <Label fx:id="lblNif" text="NIF: "/>
-                <Label fx:id="lblIsMember" text="Member: "/>
-                <Label fx:id="lblAddress" text="Address: "/>
-                <Label fx:id="lblRegistrationDate" text="Registration Date: "/>
+                <GridPane hgap="20" vgap="6">
+                    <columnConstraints>
+                        <ColumnConstraints percentWidth="50.0"/>
+                        <ColumnConstraints percentWidth="50.0"/>
+                    </columnConstraints>
+                    <children>
+                        <Label fx:id="lblName" text="Name: " GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                        <Label fx:id="lblNif" text="NIF: " GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                        <Label fx:id="lblIsMember" text="Member: " GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+
+                        <Label fx:id="lblRegistrationDate" text="Registration Date: " GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                        <Label fx:id="lblAddress" text="Address: " wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                    </children>
+                </GridPane>
 
             </VBox>
 

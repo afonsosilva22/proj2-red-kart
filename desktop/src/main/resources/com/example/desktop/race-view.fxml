@@ -22,13 +22,16 @@
 
             <TableView fx:id="table" prefHeight="260" VBox.vgrow="ALWAYS">
                 <columns>
-                    <TableColumn fx:id="colId" text="ID"/>
-                    <TableColumn fx:id="colTrack" text="Circuit Track"/>
-                    <TableColumn fx:id="colOfficial" text="Assigned Marshal"/>
-                    <TableColumn fx:id="colStart" text="Start Time"/>
-                    <TableColumn fx:id="colEnd" text="End Time"/>
-                    <TableColumn fx:id="colStatus" text="Status"/>
+                    <TableColumn fx:id="colId" text="ID" prefWidth="50"/>
+                    <TableColumn fx:id="colTrack" text="Circuit Track" prefWidth="160"/>
+                    <TableColumn fx:id="colOfficial" text="Assigned Marshal" prefWidth="160"/>
+                    <TableColumn fx:id="colStart" text="Start Time" prefWidth="140"/>
+                    <TableColumn fx:id="colEnd" text="End Time" prefWidth="140"/>
+                    <TableColumn fx:id="colStatus" text="Status" prefWidth="100"/>
                 </columns>
+                <columnResizePolicy>
+                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN" />
+                </columnResizePolicy>
             </TableView>
 
             <VBox spacing="8" style="-fx-padding:10; -fx-border-color: lightgray; -fx-border-radius: 4; -fx-background-radius: 4;">
@@ -59,12 +62,22 @@
                             style="-fx-font-weight: bold; -fx-base: #d9534f; -fx-text-fill: white;" />
                 </HBox>
 
-                <Label fx:id="lblTrack" text="Circuit Track: "/>
-                <Label fx:id="lblOfficial" text="Assigned Marshal: "/>
-                <Label fx:id="lblRental" text="Parent Rental Reference ID: "/>
-                <Label fx:id="lblTimeline" text="Timeline Schedule: "/>
-                <Label fx:id="lblKarts" text="Deployed Karts: " wrapText="true"/>
-                <Label fx:id="lblEquipment" text="Allocated Equipment: " wrapText="true"/>
+                <GridPane hgap="20" vgap="6">
+                    <columnConstraints>
+                        <ColumnConstraints percentWidth="50.0"/>
+                        <ColumnConstraints percentWidth="50.0"/>
+                    </columnConstraints>
+                    <children>
+                        <Label fx:id="lblTrack" text="Circuit Track: " GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                        <Label fx:id="lblOfficial" text="Assigned Marshal: " GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+                        <Label fx:id="lblRental" text="Parent Rental Reference ID: " GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                        <Label fx:id="lblTimeline" text="Timeline Schedule: " GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+                        <Label fx:id="lblKarts" text="Deployed Karts: " wrapText="true" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                        <Label fx:id="lblEquipment" text="Allocated Equipment: " wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                    </children>
+                </GridPane>
 
             </VBox>
 

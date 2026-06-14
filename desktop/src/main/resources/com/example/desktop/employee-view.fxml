@@ -19,17 +19,17 @@
                 <Button text="Add Employee" onAction="#addEmployee"/>
             </HBox>
 
-            <TableView fx:id="table" prefHeight="300">
+            <TableView fx:id="table" VBox.vgrow="ALWAYS" prefHeight="300">
                 <columns>
-                    <TableColumn fx:id="colId" text="ID"/>
-                    <TableColumn fx:id="colName" text="Name"/>
-                    <TableColumn fx:id="colRole" text="Role"/>
-                    <TableColumn fx:id="colEmail" text="Email"/>
-                    <TableColumn fx:id="colPhone" text="Phone"/>
-                    <TableColumn fx:id="colStatus" text="Status"/>
+                    <TableColumn fx:id="colId" text="ID" prefWidth="50"/>
+                    <TableColumn fx:id="colName" text="Name" prefWidth="150"/>
+                    <TableColumn fx:id="colRole" text="Role" prefWidth="100"/>
+                    <TableColumn fx:id="colEmail" text="Email" prefWidth="180"/>
+                    <TableColumn fx:id="colPhone" text="Phone" prefWidth="120"/>
+                    <TableColumn fx:id="colStatus" text="Status" prefWidth="100"/>
                 </columns>
                 <columnResizePolicy>
-                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN" />
                 </columnResizePolicy>
             </TableView>
 

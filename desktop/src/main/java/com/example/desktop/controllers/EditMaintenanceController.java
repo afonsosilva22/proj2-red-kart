@@ -84,23 +84,43 @@ public class EditMaintenanceController {
     private void updateMaintenance() {
         try {
             String newStatus = comboStatus.getValue();
+            String type = targetMaintenance.getType(); // "kart" or "track"
 
             // 1. Update Core Fields
             targetMaintenance.setStatus(newStatus);
             targetMaintenance.setPriority(comboPriority.getValue());
-
-            // 2. Allow user to add/edit the description directly
-            targetMaintenance.setDescription(txtDescription.getText().trim());
-
-            // 3. Update Mechanic Assignment
+            targetMaintenance.setDescription(txtDescription.getText() != null ? txtDescription.getText().trim() : "");
             targetMaintenance.setEmployee(comboEmployee.getValue());
 
-            // 4. Handle completion date logging automatically based on status resolution
+            // 2. Handle completion date logging automatically
             if ("completed".equalsIgnoreCase(newStatus) || "unrepairable".equalsIgnoreCase(newStatus)) {
                 targetMaintenance.setCompletionDate(LocalDate.now().toString());
             } else {
-                // Wipes the completion date if someone accidentally marks it complete and changes it back to "open"
-                targetMaintenance.setCompletionDate(null);
+                targetMaintenance.setCompletionDate(null); // Clear date if reopened
+            }
+
+            // 3. ASSET LIFECYCLE STATE TRANSITIONS
+            if ("completed".equalsIgnoreCase(newStatus)) {
+                if ("kart".equalsIgnoreCase(type) && targetMaintenance.getKart() != null) {
+                    targetMaintenance.getKart().setStatus("available");
+                } else if ("track".equalsIgnoreCase(type) && targetMaintenance.getTrack() != null) {
+                    targetMaintenance.getTrack().setStatus("available");
+                }
+            }
+            else if ("unrepairable".equalsIgnoreCase(newStatus)) {
+                if ("kart".equalsIgnoreCase(type) && targetMaintenance.getKart() != null) {
+                    targetMaintenance.getKart().setStatus("scrapped"); // Defunct Kart rule
+                } else if ("track".equalsIgnoreCase(type) && targetMaintenance.getTrack() != null) {
+                    targetMaintenance.getTrack().setStatus("closed");   // Defunct Track rule
+                }
+            }
+            else {
+                // Safeguard: If the ticket is still open/in-repair, ensure asset remains in 'maintenance'
+                if ("kart".equalsIgnoreCase(type) && targetMaintenance.getKart() != null) {
+                    targetMaintenance.getKart().setStatus("maintenance");
+                } else if ("track".equalsIgnoreCase(type) && targetMaintenance.getTrack() != null) {
+                    targetMaintenance.getTrack().setStatus("maintenance");
+                }
             }
 
             // Send to Backend

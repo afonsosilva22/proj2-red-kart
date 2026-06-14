@@ -31,22 +31,27 @@ public class AddMaintenanceController {
     private final MaintenanceService maintenanceService = new MaintenanceService();
     private final TrackService trackService = new TrackService();
     private final KartService kartService = new KartService();
-    private final EmployeeService employeeService = new EmployeeService(); // NEW: Employee Service
+    private final EmployeeService employeeService = new EmployeeService();
 
     @FXML
     public void initialize() {
         // 1. Initialize static dropdowns
         comboType.setItems(FXCollections.observableArrayList("track", "kart"));
         comboPriority.setItems(FXCollections.observableArrayList("low", "normal", "high", "critical"));
-        comboPriority.setValue("normal"); // Default DB value
+        comboPriority.setValue("normal");
 
         // 2. Setup StringConverters to display readable names
         setupConverters();
 
         // 3. Fetch targets and employees from the database
         try {
-            List<Track> tracks = trackService.getAllTracks();
-            List<Kart> karts = kartService.getAllKarts();
+            List<Track> availableTracks = trackService.getAllTracks().stream()
+                    .filter(t -> t.getStatus() != null && t.getStatus().equalsIgnoreCase("available"))
+                    .collect(Collectors.toList());
+
+            List<Kart> availableKarts = kartService.getAllKarts().stream()
+                    .filter(k -> k.getStatus() != null && k.getStatus().equalsIgnoreCase("available"))
+                    .collect(Collectors.toList());
 
             // Fetch employees and filter ONLY for mechanics
             List<Employee> allEmployees = employeeService.getAllEmployees();
@@ -54,16 +59,15 @@ public class AddMaintenanceController {
                     .filter(e -> e.getType() != null && e.getType().equalsIgnoreCase("mechanic"))
                     .collect(Collectors.toList());
 
-            comboTrack.setItems(FXCollections.observableArrayList(tracks));
-            comboKart.setItems(FXCollections.observableArrayList(karts));
-            comboEmployee.setItems(FXCollections.observableArrayList(mechanics)); // Populate mechanics
+            comboTrack.setItems(FXCollections.observableArrayList(availableTracks));
+            comboKart.setItems(FXCollections.observableArrayList(availableKarts));
+            comboEmployee.setItems(FXCollections.observableArrayList(mechanics));
 
         } catch (Exception e) {
             e.printStackTrace();
             showAlert("Connection Error", "Failed to load Tracks, Karts, or Employees from the server.");
         }
 
-        // 4. ENFORCE: chk_maintenance_target DB CONSTRAINT
         comboType.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
             if ("track".equals(newVal)) {
                 comboTrack.setDisable(false);
@@ -88,11 +92,9 @@ public class AddMaintenanceController {
             @Override public Kart fromString(String string) { return null; }
         });
 
-        // NEW: Converter for Mechanic/Employee
         comboEmployee.setConverter(new StringConverter<Employee>() {
             @Override
             public String toString(Employee employee) {
-                // Adjust this if your model uses getFirstName() + " " + getLastName()
                 return employee == null ? null : employee.getName() + " (ID: " + employee.getId() + ")";
             }
             @Override public Employee fromString(String string) { return null; }
@@ -126,11 +128,18 @@ public class AddMaintenanceController {
             m.setOpenDate(LocalDate.now().toString());
             m.setStatus("open");
 
-            // Assign proper relation based on type
-            if ("track".equals(type)) m.setTrack(comboTrack.getValue());
-            if ("kart".equals(type)) m.setKart(comboKart.getValue());
+            if ("track".equals(type)) {
+                Track selectedTrack = comboTrack.getValue();
+                selectedTrack.setStatus("maintenance");
+                m.setTrack(selectedTrack);
+            }
 
-            // NEW: Assign Mechanic (Nullable in your DB schema, so it's fine if they leave it empty)
+            if ("kart".equals(type)) {
+                Kart selectedKart = comboKart.getValue();
+                selectedKart.setStatus("maintenance");
+                m.setKart(selectedKart);
+            }
+
             if (comboEmployee.getValue() != null) {
                 m.setEmployee(comboEmployee.getValue());
             }

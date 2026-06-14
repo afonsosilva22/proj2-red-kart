@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
@@ -19,12 +20,15 @@
             <TableView fx:id="table" VBox.vgrow="ALWAYS">
                 <columns>
                     <TableColumn fx:id="colId" text="ID" prefWidth="50"/>
-                    <TableColumn fx:id="colType" text="Type" prefWidth="80"/>
-                    <TableColumn fx:id="colTarget" text="Target Object" prefWidth="150"/>
+                    <TableColumn fx:id="colType" text="Type" prefWidth="90"/>
+                    <TableColumn fx:id="colTarget" text="Target Object" prefWidth="180"/>
                     <TableColumn fx:id="colPriority" text="Priority" prefWidth="100"/>
                     <TableColumn fx:id="colStatus" text="Status" prefWidth="120"/>
-                    <TableColumn fx:id="colOpenDate" text="Opened On" prefWidth="120"/>
+                    <TableColumn fx:id="colOpenDate" text="Opened On" prefWidth="130"/>
                 </columns>
+                <columnResizePolicy>
+                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN" />
+                </columnResizePolicy>
             </TableView>
 
             <VBox spacing="8" style="-fx-padding:10; -fx-border-color: lightgray; -fx-border-radius: 4; -fx-background-radius: 4;">
@@ -42,7 +46,7 @@
                     <children>
                         <Label fx:id="lblDescription" text="Description: " GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="2" wrapText="true"/>
                         <Label fx:id="lblEmployee" text="Assigned Tech: " GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-                        <Label fx:id="lblCompletion" text="Completion Date: " GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                        <Label fx:id="lblCompletion" text="Completion Date: " GridPane.columnIndex="0" GridPane.rowIndex="2"/>
                     </children>
                 </GridPane>
             </VBox>

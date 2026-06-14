@@ -44,11 +44,20 @@
                     <Button fx:id="btnDelete" text="Delete" onAction="#deleteRental" disable="true" style="-fx-font-weight: bold; -fx-base: #d9534f; -fx-text-fill: white;" />
                 </HBox>
 
-                <Label fx:id="lblBasePrice" text="Base Price: "/>
-                <Label fx:id="lblDiscount" text="Discount: "/>
-                <Label fx:id="lblActualStart" text="Actual Start: "/>
-                <Label fx:id="lblActualEnd" text="Actual End: "/>
-                <Label fx:id="lblComplaint" text="Complaint: "/>
+                <GridPane hgap="20" vgap="6">
+                    <columnConstraints>
+                        <ColumnConstraints percentWidth="50.0"/>
+                        <ColumnConstraints percentWidth="50.0"/>
+                    </columnConstraints>
+                    <children>
+                        <Label fx:id="lblBasePrice" text="Base Price: " GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                        <Label fx:id="lblDiscount" text="Discount: " GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                        <Label fx:id="lblComplaint" text="Complaint: " wrapText="true" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+
+                        <Label fx:id="lblActualStart" text="Actual Start: " GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                        <Label fx:id="lblActualEnd" text="Actual End: " GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                    </children>
+                </GridPane>
             </VBox>
 
         </VBox>

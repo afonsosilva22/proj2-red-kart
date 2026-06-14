@@ -225,7 +225,7 @@ public class RaceController {
 
                                 // 1. UPDATE KART MILEAGE (Integer version)
                                 int currentMileage = kart.getMileage() != null ? kart.getMileage() : 0;
-                                int roundedMileageAdded = (int) Math.round(mileageAdded);
+                                int roundedMileageAdded = (int) Math.ceil(mileageAdded);
                                 kart.setMileage(currentMileage + roundedMileageAdded);
 
                                 // 2. GENERATE LAPS

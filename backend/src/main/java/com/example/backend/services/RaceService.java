@@ -1,9 +1,12 @@
 package com.example.backend.services;
 
 import com.example.backend.models.Race;
+import com.example.backend.models.RaceKart;
 import com.example.backend.repositories.RaceRepository;
+import com.example.backend.repositories.KartRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -12,8 +15,18 @@ import java.util.List;
 public class RaceService {
 
     private final RaceRepository repository;
+    private final KartRepository kartRepository;
 
+    @Transactional
     public Race create(Race race) {
+        if (race.getRaceKarts() != null) {
+            for (RaceKart rk : race.getRaceKarts()) {
+                if (rk.getKart() != null) {
+                    kartRepository.save(rk.getKart());
+                }
+            }
+        }
+
         return repository.save(race);
     }
 

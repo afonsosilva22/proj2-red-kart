@@ -17,17 +17,17 @@
                 <Button text="Add New Track" onAction="#addTrack"/>
             </HBox>
 
-            <TableView fx:id="table" prefHeight="300">
+            <TableView fx:id="table" VBox.vgrow="ALWAYS" prefHeight="300">
                 <columns>
-                    <TableColumn fx:id="colId" text="ID"/>
-                    <TableColumn fx:id="colName" text="Track Name"/>
-                    <TableColumn fx:id="colPrice" text="Price / Hour"/>
-                    <TableColumn fx:id="colLength" text="Length (KM)"/>
-                    <TableColumn fx:id="colLimit" text="Kart Limit"/>
-                    <TableColumn fx:id="colStatus" text="Status"/>
+                    <TableColumn fx:id="colId" text="ID" prefWidth="50" />
+                    <TableColumn fx:id="colName" text="Track Name" prefWidth="180" />
+                    <TableColumn fx:id="colPrice" text="Price / Hour" prefWidth="100" />
+                    <TableColumn fx:id="colLength" text="Length (KM)" prefWidth="100" />
+                    <TableColumn fx:id="colLimit" text="Kart Limit" prefWidth="90" />
+                    <TableColumn fx:id="colStatus" text="Status" prefWidth="120" />
                 </columns>
                 <columnResizePolicy>
-                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN" />
                 </columnResizePolicy>
             </TableView>
 

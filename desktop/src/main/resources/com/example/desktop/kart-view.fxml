@@ -20,18 +20,18 @@
                 <Button text="Add Kart Type" onAction="#addKartType" style="-fx-base: #f0ad4e; -fx-text-fill: white; -fx-font-weight: bold;"/>
             </HBox>
 
-            <TableView fx:id="table" prefHeight="300">
+            <TableView fx:id="table" VBox.vgrow="ALWAYS" prefHeight="300">
                 <columns>
-                    <TableColumn fx:id="colId" text="ID"/>
-                    <TableColumn fx:id="colKartNumber" text="Kart Number"/>
-                    <TableColumn fx:id="colType" text="Type Class"/>
-                    <TableColumn fx:id="colMileage" text="Mileage (km)"/>
-                    <TableColumn fx:id="colManufactureYear" text="Year"/>
-                    <TableColumn fx:id="colLastService" text="Last Service"/>
-                    <TableColumn fx:id="colStatus" text="Status"/>
+                    <TableColumn fx:id="colId" text="ID" prefWidth="50"/>
+                    <TableColumn fx:id="colKartNumber" text="Kart Number" prefWidth="110"/>
+                    <TableColumn fx:id="colType" text="Type Class" prefWidth="130"/>
+                    <TableColumn fx:id="colMileage" text="Mileage (km)" prefWidth="110"/>
+                    <TableColumn fx:id="colManufactureYear" text="Year" prefWidth="70"/>
+                    <TableColumn fx:id="colLastService" text="Last Service" prefWidth="130"/>
+                    <TableColumn fx:id="colStatus" text="Status" prefWidth="100"/>
                 </columns>
                 <columnResizePolicy>
-                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN" />
                 </columnResizePolicy>
             </TableView>
 

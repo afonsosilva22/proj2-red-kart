@@ -34,11 +34,11 @@ public class Maintenance {
     @Column(name = "status", nullable = false, length = 20)
     private String status;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "track_id")
     private Track track;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "kart_id")
     private Kart kart;
 

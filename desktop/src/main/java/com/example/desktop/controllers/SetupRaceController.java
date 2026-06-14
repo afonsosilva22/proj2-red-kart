@@ -11,6 +11,7 @@ import javafx.util.StringConverter;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class SetupRaceController {
 
@@ -101,12 +102,29 @@ public class SetupRaceController {
 
     private void loadDatabaseRelations() {
         try {
+            // Filter Tracks: Exclude 'closed' layouts
+            List<Track> activeTracks = trackService.getAllTracks().stream()
+                    .filter(t -> t.getStatus() == null || !t.getStatus().equalsIgnoreCase("closed"))
+                    .collect(Collectors.toList());
+            comboTrack.setItems(FXCollections.observableArrayList(activeTracks));
+
+            // Filter Karts: Exclude 'scrapped' units
+            List<Kart> activeKarts = kartService.getAllKarts().stream()
+                    .filter(k -> k.getStatus() == null || !k.getStatus().equalsIgnoreCase("scrapped"))
+                    .collect(Collectors.toList());
+            listKarts.setItems(FXCollections.observableArrayList(activeKarts));
+
+            // Filter Equipment: Exclude 'scrapped' units
+            List<Equipment> activeEquipment = equipmentService.getAllEquipment().stream()
+                    .filter(e -> e.getStatus() == null || !e.getStatus().equalsIgnoreCase("scrapped"))
+                    .collect(Collectors.toList());
+            listEquipment.setItems(FXCollections.observableArrayList(activeEquipment));
+
+            // Load other assets normally
             comboEmployee.setItems(FXCollections.observableArrayList(employeeService.getAllEmployees()));
-            comboTrack.setItems(FXCollections.observableArrayList(trackService.getAllTracks()));
-            listKarts.setItems(FXCollections.observableArrayList(kartService.getAllKarts()));
-            listEquipment.setItems(FXCollections.observableArrayList(equipmentService.getAllEquipment()));
         } catch (Exception e) {
             e.printStackTrace();
+            showError("Loading Error", "Failed to load up-to-date fleet or circuit data from the server.");
         }
     }
 
@@ -116,13 +134,11 @@ public class SetupRaceController {
             @Override public Employee fromString(String s) { return null; }
         });
 
-        // Updated to use getLengthKm() matching your actual Track definition
         comboTrack.setConverter(new StringConverter<Track>() {
             @Override public String toString(Track t) { return t == null ? "" : t.getName() + " (" + t.getLengthKm() + " km)"; }
             @Override public Track fromString(String s) { return null; }
         });
 
-        // Updated to use getKartNumber() and getKartTypeName()
         listKarts.setCellFactory(lv -> new ListCell<Kart>() {
             @Override protected void updateItem(Kart item, boolean empty) {
                 super.updateItem(item, empty);
@@ -130,7 +146,6 @@ public class SetupRaceController {
             }
         });
 
-        // Updated to dynamically present Equipment by combining Type, Brand, and Size
         listEquipment.setCellFactory(lv -> new ListCell<Equipment>() {
             @Override protected void updateItem(Equipment item, boolean empty) {
                 super.updateItem(item, empty);
