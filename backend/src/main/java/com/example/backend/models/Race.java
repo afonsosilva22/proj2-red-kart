@@ -1,6 +1,7 @@
 package com.example.backend.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -38,8 +39,12 @@ public class Race {
     @JoinColumn(name = "track_id", nullable = false)
     private Track track;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "race")
+    @JsonIgnoreProperties("race")
+    @OneToMany(mappedBy = "race", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<RaceKart> raceKarts = new LinkedHashSet<>();
+
+    @JsonIgnoreProperties("race")
+    @OneToMany(mappedBy = "race", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<RaceEquipment> raceEquipments = new LinkedHashSet<>();
 
     public Integer getId() {
@@ -96,6 +101,14 @@ public class Race {
 
     public void setTrack(Track track) {
         this.track = track;
+    }
+
+    public Set<RaceKart> getRaceKarts() {
+        return raceKarts;
+    }
+
+    public void setRaceKarts(Set<RaceKart> raceKarts) {
+        this.raceKarts = raceKarts;
     }
 
     public Set<RaceEquipment> getRaceEquipments() {

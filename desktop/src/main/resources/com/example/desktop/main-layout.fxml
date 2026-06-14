@@ -33,6 +33,9 @@
 
             <Button text="Maintenances" onAction="#showMaintenancesPage"
                     style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14px; -fx-alignment: BASELINE_LEFT;" prefWidth="180"/>
+
+            <Button text="Races" onAction="#showRacesPage"
+                    style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14px; -fx-alignment: BASELINE_LEFT;" prefWidth="180"/>
         </VBox>
     </left>
 

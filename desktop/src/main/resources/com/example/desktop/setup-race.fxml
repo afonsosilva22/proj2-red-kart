@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.desktop.controllers.SetupRaceController"
+      spacing="12"
+      prefWidth="520"
+      prefHeight="680"
+      style="-fx-padding: 20;">
+
+    <Label text="Configure New Race Event" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+    <Label fx:id="lblRentalContext" text="Parent Rental Reference ID: N/A" style="-fx-text-fill: #777; -fx-font-style: italic;"/>
+    <Separator/>
+
+    <GridPane hgap="10" vgap="10">
+        <columnConstraints>
+            <ColumnConstraints prefWidth="140"/>
+            <ColumnConstraints prefWidth="340" hgrow="ALWAYS"/>
+        </columnConstraints>
+
+        <Label text="Marshal Official:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+        <ComboBox fx:id="comboEmployee" promptText="Assign Race Official" GridPane.rowIndex="0" GridPane.columnIndex="1" prefWidth="340"/>
+
+        <Label text="Circuit Track layout:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+        <ComboBox fx:id="comboTrack" promptText="Select Target Circuit Layout" GridPane.rowIndex="1" GridPane.columnIndex="1" prefWidth="340"/>
+    </GridPane>
+
+    <Separator style="-fx-padding: 5 0 5 0;"/>
+
+    <HBox spacing="15" VBox.vgrow="ALWAYS">
+        <VBox spacing="5" HBox.hgrow="ALWAYS">
+            <Label text="Deploy Fleet Vehicles (Karts):" style="-fx-font-weight: bold; -fx-text-fill: #444;"/>
+            <ListView fx:id="listKarts" prefHeight="250"/>
+            <Label text="* Hold Ctrl / Cmd to select multiple units" style="-fx-font-size: 10px; -fx-text-fill: #888;"/>
+        </VBox>
+
+        <VBox spacing="5" HBox.hgrow="ALWAYS">
+            <Label text="Allocate Race Equipment:" style="-fx-font-weight: bold; -fx-text-fill: #444;"/>
+            <ListView fx:id="listEquipment" prefHeight="250"/>
+            <Label text="* Allocates 1 unit per item highlighted" style="-fx-font-size: 10px; -fx-text-fill: #888;"/>
+        </VBox>
+    </HBox>
+
+    <Separator style="-fx-padding: 5 0 5 0;"/>
+
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Button text="Cancel Operation" onAction="#closeWindow"/>
+        <Button text="Finalize &amp; Save Race" onAction="#saveRace" prefWidth="180" style="-fx-font-weight: bold; -fx-base: #5cb85c; -fx-text-fill: white;" />
+    </HBox>
+</VBox>

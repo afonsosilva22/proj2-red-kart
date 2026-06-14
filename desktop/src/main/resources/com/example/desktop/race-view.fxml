@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="550.0" prefWidth="750.0"
+            xmlns="http://javafx.com/javafx/17.0.12"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.desktop.controllers.RaceController">
+
+    <children>
+
+        <VBox spacing="10" AnchorPane.topAnchor="10"
+              AnchorPane.leftAnchor="10"
+              AnchorPane.rightAnchor="10"
+              AnchorPane.bottomAnchor="10">
+
+            <HBox spacing="10">
+                <Button text="Refresh Table" onAction="#loadRaces"/>
+            </HBox>
+
+            <TableView fx:id="table" prefHeight="260" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="colId" text="ID"/>
+                    <TableColumn fx:id="colTrack" text="Circuit Track"/>
+                    <TableColumn fx:id="colOfficial" text="Assigned Marshal"/>
+                    <TableColumn fx:id="colStart" text="Start Time"/>
+                    <TableColumn fx:id="colEnd" text="End Time"/>
+                    <TableColumn fx:id="colStatus" text="Status"/>
+                </columns>
+            </TableView>
+
+            <VBox spacing="8" style="-fx-padding:10; -fx-border-color: lightgray; -fx-border-radius: 4; -fx-background-radius: 4;">
+
+                <HBox alignment="CENTER_LEFT" spacing="10">
+
+                    <Label text="Race Details" style="-fx-font-size:16; -fx-font-weight:bold;" />
+                    <Region HBox.hgrow="ALWAYS" />
+
+                    <Button fx:id="btnStart"
+                            text="Start Race"
+                            onAction="#startRace"
+                            disable="true"
+                            style="-fx-font-weight: bold; -fx-base: #5cb85c; -fx-text-fill: white;" />
+
+                    <Button fx:id="btnEnd"
+                            text="End Race"
+                            onAction="#endRace"
+                            disable="true"
+                            visible="false"
+                            managed="false"
+                            style="-fx-font-weight: bold; -fx-base: #0275d8; -fx-text-fill: white;" />
+
+                    <Button fx:id="btnDelete"
+                            text="Cancel Race"
+                            onAction="#deleteRace"
+                            disable="true"
+                            style="-fx-font-weight: bold; -fx-base: #d9534f; -fx-text-fill: white;" />
+                </HBox>
+
+                <Label fx:id="lblTrack" text="Circuit Track: "/>
+                <Label fx:id="lblOfficial" text="Assigned Marshal: "/>
+                <Label fx:id="lblRental" text="Parent Rental Reference ID: "/>
+                <Label fx:id="lblTimeline" text="Timeline Schedule: "/>
+                <Label fx:id="lblKarts" text="Deployed Karts: " wrapText="true"/>
+                <Label fx:id="lblEquipment" text="Allocated Equipment: " wrapText="true"/>
+
+            </VBox>
+
+        </VBox>
+
+    </children>
+</AnchorPane>

@@ -19,6 +19,24 @@ public class RaceController {
 
     @PostMapping("/create")
     public ResponseEntity<Race> create(@RequestBody Race race) {
+        if (race.getRaceKarts() != null) {
+            race.getRaceKarts().forEach(rk -> {
+                rk.setRace(race);
+
+                // Re-link the Laps to the RaceKart
+                if (rk.getLaps() != null && !rk.getLaps().isEmpty()) {
+                    System.out.println("SUCCESS: Received " + rk.getLaps().size() + " laps for Kart #" + rk.getKart().getId());
+                    rk.getLaps().forEach(lap -> lap.setRaceKart(rk));
+                } else {
+                    System.out.println("WARNING: 0 Laps received for Kart #" + rk.getKart().getId());
+                }
+            });
+        }
+
+        if (race.getRaceEquipments() != null) {
+            race.getRaceEquipments().forEach(re -> re.setRace(race));
+        }
+
         Race saved = service.create(race);
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }

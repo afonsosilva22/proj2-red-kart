@@ -40,6 +40,7 @@ public class RentalController {
     @FXML private Button btnEdit;
     @FXML private Button btnRegisterPayment;
     @FXML private Button btnDelete;
+    @FXML private Button btnSetupRace;
 
     private final RentalService rentalService = new RentalService();
 
@@ -93,6 +94,12 @@ public class RentalController {
                 btnRegisterPayment.setDisable(false);
             } else {
                 btnRegisterPayment.setDisable(true);
+            }
+
+            if (newVal != null && "fully_payed".equalsIgnoreCase(newVal.getStatus())) {
+                btnSetupRace.setDisable(false);
+            } else {
+                btnSetupRace.setDisable(true);
             }
         });
 
@@ -148,6 +155,33 @@ public class RentalController {
             loadRentals();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void setupRace() {
+        Rental selectedRental = rentalTable.getSelectionModel().getSelectedItem();
+        if (selectedRental == null) return;
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/desktop/setup-race.fxml"));
+            Parent root = loader.load();
+
+            SetupRaceController controller = loader.getController();
+            controller.setRentalContext(selectedRental); // Pass the contextual parent booking row along
+
+            Stage stage = new Stage();
+            stage.setTitle("Race Event Configuration Wizard");
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
+
+            loadRentals(); // Refresh dataset listings on frame modal dismissal
+        } catch (IOException e) {
+            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Navigation UI Error");
+            alert.setContentText("Could not find or instantiate layout configuration: " + e.getMessage());
+            alert.showAndWait();
         }
     }
 

@@ -1,5 +1,7 @@
 package com.example.backend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -10,15 +12,12 @@ public class Lap {
     @EmbeddedId
     private LapId id;
 
-    @MapsId("id")
     @JoinColumns({
-            @JoinColumn(name = "race_id",
-                    referencedColumnName = "race_id",
-                    nullable = false),
-            @JoinColumn(name = "kart_id",
-                    referencedColumnName = "kart_id",
-                    nullable = false)})
+            @JoinColumn(name = "race_id", referencedColumnName = "race_id", insertable = false, updatable = false, nullable = false),
+            @JoinColumn(name = "kart_id", referencedColumnName = "kart_id", insertable = false, updatable = false, nullable = false)
+    })
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JsonIgnore
     private RaceKart raceKart;
 
     @Column(name = "lap_time", nullable = false, precision = 6, scale = 3)
@@ -47,5 +46,4 @@ public class Lap {
     public void setLapTime(BigDecimal lapTime) {
         this.lapTime = lapTime;
     }
-
 }

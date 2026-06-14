@@ -6,6 +6,7 @@ module com.example.desktop {
     requires com.dlsc.formsfx;
     requires java.net.http;
     requires com.google.gson;
+    requires com.fasterxml.jackson.annotation;
 
     opens com.example.desktop to javafx.fxml;
     opens com.example.desktop.controllers to javafx.fxml;

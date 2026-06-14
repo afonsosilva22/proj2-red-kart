@@ -18,12 +18,11 @@ public class RaceKart {
     private Race race;
 
     @MapsId("kartId")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.MERGE)
     @JoinColumn(name = "kart_id", nullable = false)
     private Kart kart;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "raceKart")
+    @OneToMany(mappedBy = "raceKart", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Lap> laps = new LinkedHashSet<>();
 
     public RaceKartId getId() {

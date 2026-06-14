@@ -50,6 +50,11 @@ public class MainLayoutController {
         changePage("/com/example/desktop/maintenance-view.fxml");
     }
 
+    @FXML
+    private void showRacesPage() {
+        changePage("/com/example/desktop/race-view.fxml");
+    }
+
     private void changePage(String fxmlPath) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
