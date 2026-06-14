@@ -17,7 +17,6 @@
               AnchorPane.bottomAnchor="10">
 
             <HBox spacing="10">
-                <Button text="Refresh Table" onAction="#loadRaces"/>
             </HBox>
 
             <TableView fx:id="table" prefHeight="260" VBox.vgrow="ALWAYS">

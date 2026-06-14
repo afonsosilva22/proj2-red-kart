@@ -12,12 +12,7 @@ public class MainLayoutController {
 
     @FXML
     public void initialize() {
-        showCustomersPage();
-    }
-
-    @FXML
-    private void showCustomersPage() {
-        changePage("/com/example/desktop/customer-view.fxml");
+        showRentalsPage();
     }
 
     @FXML
@@ -26,8 +21,18 @@ public class MainLayoutController {
     }
 
     @FXML
-    private void showEmployeesPage() {
-        changePage("/com/example/desktop/employee-view.fxml");
+    private void showRacesPage() {
+        changePage("/com/example/desktop/race-view.fxml");
+    }
+
+    @FXML
+    private void showCustomersPage() {
+        changePage("/com/example/desktop/customer-view.fxml");
+    }
+
+    @FXML
+    private void showTracksPage() {
+        changePage("/com/example/desktop/track-view.fxml");
     }
 
     @FXML
@@ -41,18 +46,13 @@ public class MainLayoutController {
     }
 
     @FXML
-    private void showTracksPage() {
-        changePage("/com/example/desktop/track-view.fxml");
-    }
-
-    @FXML
     private void showMaintenancesPage() {
         changePage("/com/example/desktop/maintenance-view.fxml");
     }
 
     @FXML
-    private void showRacesPage() {
-        changePage("/com/example/desktop/race-view.fxml");
+    private void showEmployeesPage() {
+        changePage("/com/example/desktop/employee-view.fxml");
     }
 
     private void changePage(String fxmlPath) {

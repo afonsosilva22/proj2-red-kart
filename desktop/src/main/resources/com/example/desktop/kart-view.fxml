@@ -15,7 +15,6 @@
               AnchorPane.bottomAnchor="10">
 
             <HBox spacing="10">
-                <Button text="Refresh Table" onAction="#loadKarts"/>
                 <Button text="Add New Kart" onAction="#addKart"/>
                 <Button text="Add Kart Type" onAction="#addKartType" style="-fx-base: #f0ad4e; -fx-text-fill: white; -fx-font-weight: bold;"/>
             </HBox>

@@ -15,7 +15,6 @@
               AnchorPane.bottomAnchor="10">
 
             <HBox spacing="10">
-                <Button text="Refresh Table" onAction="#loadRentals"/>
                 <Button text="Add Rental" onAction="#addRental"/>
                 <Button fx:id="btnSetupRace" text="Setup Race" onAction="#setupRace" disable="true" style="-fx-font-weight: bold; -fx-base: #f0ad4e; -fx-text-fill: white;" />
             </HBox>

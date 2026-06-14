@@ -17,7 +17,6 @@
               AnchorPane.bottomAnchor="10">
 
             <HBox spacing="10">
-                <Button text="Refresh Table" onAction="#loadCustomers"/>
                 <Button text="Add Customer" onAction="#addCustomer"/>
             </HBox>
 
