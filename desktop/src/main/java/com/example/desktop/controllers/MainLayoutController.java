@@ -62,9 +62,9 @@ public class MainLayoutController {
                 break;
 
             case "Manager":
-                // Ordered: Employees, Tracks, Karts, Equipments
-                navLinksContainer.getChildren().addAll(btnEmployees, btnTracks, btnKarts, btnEquipments);
-                showEmployeesPage(); // Default landing page for Manager
+                // Ordered: Customers, Employees, Tracks, Karts, Equipments
+                navLinksContainer.getChildren().addAll(btnCustomers, btnEmployees, btnTracks, btnKarts, btnEquipments);
+                showCustomersPage(); // Default landing page for Manager
                 break;
         }
     }

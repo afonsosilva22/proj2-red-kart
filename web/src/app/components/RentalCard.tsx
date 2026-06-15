@@ -15,6 +15,7 @@ export function RentalCard({ rental }: RentalCardProps) {
       case 'scheduled':
         return 'default';
       case 'active':
+      case 'ongoing':
         return 'secondary';
       case 'completed':
       case 'finished':
@@ -33,6 +34,7 @@ export function RentalCard({ rental }: RentalCardProps) {
       case 'scheduled':
         return 'bg-blue-500';
       case 'active':
+      case 'ongoing':
         return 'bg-green-500';
       case 'completed':
       case 'finished':

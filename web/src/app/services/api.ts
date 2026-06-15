@@ -2,6 +2,7 @@ import { API_BASE_URL } from '../config';
 import {
   ApiEquipment,
   ApiKart,
+  ApiTrack,
   CreatePaymentRequest,
   CreateRaceRequest,
   CreateRentalRequest,
@@ -10,8 +11,9 @@ import {
   KartTypePrice,
   Payment,
   Race,
+  RaceEquipment,
+  RaceKart,
   Rental,
-  Track,
 } from '../types';
 
 async function apiFetch<T>(path: string, options?: RequestInit): Promise<T> {
@@ -52,8 +54,8 @@ export const employeeApi = {
 };
 
 export const trackApi = {
-  async getAll(): Promise<Track[]> {
-    return apiFetch<Track[]>('/api/tracks/get/all');
+  async getAll(): Promise<ApiTrack[]> {
+    return apiFetch<ApiTrack[]>('/api/tracks/get/all');
   },
 };
 
@@ -100,10 +102,32 @@ export const rentalApi = {
 };
 
 export const raceApi = {
+  async getAll(): Promise<Race[]> {
+    return apiFetch<Race[]>('/api/races/get/all');
+  },
+
   async create(race: CreateRaceRequest): Promise<Race> {
     return apiFetch<Race>('/api/races/create', {
       method: 'POST',
       body: JSON.stringify(race),
+    });
+  },
+};
+
+export const raceKartApi = {
+  async create(raceKart: RaceKart): Promise<RaceKart> {
+    return apiFetch<RaceKart>('/api/race-karts/create', {
+      method: 'POST',
+      body: JSON.stringify(raceKart),
+    });
+  },
+};
+
+export const raceEquipmentApi = {
+  async create(raceEquipment: RaceEquipment): Promise<RaceEquipment> {
+    return apiFetch<RaceEquipment>('/api/race-equipments/create', {
+      method: 'POST',
+      body: JSON.stringify(raceEquipment),
     });
   },
 };

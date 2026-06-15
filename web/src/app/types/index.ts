@@ -23,9 +23,18 @@ export interface Track {
   status: string;
 }
 
+export interface ApiTrack {
+  id: number;
+  name: string;
+  pricePerHour: number | string;
+  lengthKm: number | string;
+  kartLimit: number;
+  status: string;
+}
+
 export interface KartTypePrice {
   type: string;
-  pricePerHour: number;
+  pricePerHour: number | string;
 }
 
 /** Raw kart shape returned by the backend. */
@@ -46,7 +55,9 @@ export interface Kart {
   model: string;
   status: string;
   kartNumber: string;
+  mileage: number;
   manufactureYear: number;
+  lastServiceDate?: string | null;
   type?: KartTypePrice;
 }
 
@@ -56,6 +67,7 @@ export interface ApiEquipment {
   size: string;
   brand?: string | null;
   color?: string | null;
+  acquisitionDate?: string | null;
   type: string;
   status: string;
 }
@@ -64,6 +76,10 @@ export interface ApiEquipment {
 export interface Equipment {
   id: number;
   name: string;
+  size: string;
+  brand?: string | null;
+  color?: string | null;
+  acquisitionDate?: string | null;
   type: string;
   pricePerUnit: number;
   stockQuantity: number;
@@ -97,11 +113,21 @@ export interface Race {
 }
 
 export interface RaceKart {
-  kart: { id: number };
+  id?: {
+    raceId: number;
+    kartId: number;
+  };
+  race?: { id: number };
+  kart: ApiKart;
 }
 
 export interface RaceEquipment {
-  equipment: { id: number };
+  id?: {
+    raceId: number;
+    equipmentId: number;
+  };
+  race?: { id: number };
+  equipment: ApiEquipment;
   quantity: number;
 }
 
@@ -132,8 +158,8 @@ export interface CreateRaceRequest {
   rental: { id: number };
   employee: { id: number };
   track: { id: number };
-  raceKarts: RaceKart[];
-  raceEquipments: RaceEquipment[];
+  raceKarts?: RaceKart[];
+  raceEquipments?: RaceEquipment[];
 }
 
 export interface CreatePaymentRequest {

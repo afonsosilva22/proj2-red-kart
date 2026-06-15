@@ -14,5 +14,4 @@ export const EQUIPMENT_RENTAL_PRICES: Record<string, number> = {
 };
 
 export const UPCOMING_STATUSES = ['scheduled', 'fully_payed'] as const;
-export const ACTIVE_STATUSES = ['active', 'in_progress'] as const;
 export const COMPLETED_STATUSES = ['finished', 'completed', 'cancelled'] as const;

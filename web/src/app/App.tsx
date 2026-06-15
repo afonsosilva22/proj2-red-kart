@@ -4,12 +4,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from './components/ui/tabs';
 import { Plus, Car, Loader2 } from 'lucide-react';
 import { RentalCard } from './components/RentalCard';
 import { NewRentalDialog } from './components/NewRentalDialog';
-import { Rental, Customer } from './types';
+import { Rental, Customer, Race } from './types';
 import { Toaster, toast } from 'sonner';
 import redKartLogo from '../imports/red-kart-logo.png';
-import { customerApi, rentalApi } from './services/api';
+import { customerApi, raceApi, rentalApi } from './services/api';
 import {
-  ACTIVE_STATUSES,
   COMPLETED_STATUSES,
   DEFAULT_CUSTOMER_ID,
   UPCOMING_STATUSES,
@@ -17,15 +16,17 @@ import {
 
 function App() {
   const [rentals, setRentals] = useState<Rental[]>([]);
+  const [races, setRaces] = useState<Race[]>([]);
   const [customer, setCustomer] = useState<Customer | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  const loadData = useCallback(async () => {
+  const loadData = useCallback(async (showLoading = true, showErrors = true) => {
     try {
-      setIsLoading(true);
-      const [allRentals, currentCustomer] = await Promise.all([
+      if (showLoading) setIsLoading(true);
+      const [allRentals, allRaces, currentCustomer] = await Promise.all([
         rentalApi.getAll(),
+        raceApi.getAll(),
         customerApi.getById(DEFAULT_CUSTOMER_ID),
       ]);
 
@@ -33,19 +34,28 @@ function App() {
         r => r.customer?.id === DEFAULT_CUSTOMER_ID
       );
       setRentals(customerRentals);
+      setRaces(allRaces);
       setCustomer(currentCustomer);
     } catch (error) {
       console.error('Failed to load data from backend:', error);
-      toast.error('Failed to load rentals', {
-        description: 'Make sure the backend is running at http://localhost:8080',
-      });
+      if (showErrors) {
+        toast.error('Failed to load rentals', {
+          description: 'Make sure the backend is running at http://localhost:8080',
+        });
+      }
     } finally {
-      setIsLoading(false);
+      if (showLoading) setIsLoading(false);
     }
   }, []);
 
   useEffect(() => {
     loadData();
+
+    const refreshInterval = window.setInterval(() => {
+      loadData(false, false);
+    }, 10000);
+
+    return () => window.clearInterval(refreshInterval);
   }, [loadData]);
 
   const handleRentalCreated = (newRental: Rental) => {
@@ -58,8 +68,11 @@ function App() {
   const upcomingRentals = rentals.filter(r =>
     UPCOMING_STATUSES.includes(r.status as (typeof UPCOMING_STATUSES)[number])
   );
-  const activeRentals = rentals.filter(r =>
-    ACTIVE_STATUSES.includes(r.status as (typeof ACTIVE_STATUSES)[number])
+  const activeRentals = rentals.filter(rental =>
+    races.some(race =>
+      race.status?.toLowerCase() === 'ongoing'
+      && race.rental?.id === rental.id
+    )
   );
   const completedRentals = rentals.filter(r =>
     COMPLETED_STATUSES.includes(r.status as (typeof COMPLETED_STATUSES)[number])

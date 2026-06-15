@@ -14,11 +14,13 @@ import {
   getDefaultEmployeeId,
   kartApi,
   paymentApi,
+  raceEquipmentApi,
   raceApi,
+  raceKartApi,
   rentalApi,
   trackApi,
 } from '../services/api';
-import { mapEquipmentFromApi, mapKartFromApi } from '../utils/catalog';
+import { mapEquipmentFromApi, mapKartFromApi, mapTrackFromApi, normalizeNumber } from '../utils/catalog';
 import { toast } from 'sonner';
 
 interface NewRentalDialogProps {
@@ -72,7 +74,7 @@ export function NewRentalDialog({ open, onOpenChange, onRentalCreated, customerI
           getDefaultEmployeeId(),
         ]);
 
-        setTracks(trackData);
+        setTracks(trackData.map(mapTrackFromApi));
         setKarts(kartData.map(mapKartFromApi));
         setEquipment(equipmentData.map(mapEquipmentFromApi));
         setEmployeeId(defaultEmployeeId);
@@ -95,13 +97,13 @@ export function NewRentalDialog({ open, onOpenChange, onRentalCreated, customerI
   const basePrice = (() => {
     if (rentalType === 'kart') {
       const selectedKarts = karts.filter(k => selectedKartIds.includes(k.id));
-      const hourlyRate =
-        selectedKarts.length > 0
-          ? Math.max(...selectedKarts.map(k => k.type?.pricePerHour ?? 0))
-          : Math.max(...karts.filter(k => k.status === 'available').map(k => k.type?.pricePerHour ?? 0), 0);
+      const hourlyRate = selectedKarts.reduce(
+        (sum, kart) => sum + normalizeNumber(kart.type?.pricePerHour),
+        0
+      );
       return hourlyRate * durationHours;
     }
-    return (selectedTrack?.pricePerHour ?? 0) * durationHours;
+    return normalizeNumber(selectedTrack?.pricePerHour) * durationHours;
   })();
 
   const equipmentTotal = equipmentSelections.reduce((sum, sel) => {
@@ -181,19 +183,57 @@ export function NewRentalDialog({ open, onOpenChange, onRentalCreated, customerI
         employee: { id: employeeId },
       });
 
-      await raceApi.create({
+      const createdRace = await raceApi.create({
         startDatetime: startDateTime.toISOString(),
         endDatetime: endDateTime.toISOString(),
         status: 'scheduled',
         rental: { id: createdRental.id! },
         employee: { id: employeeId },
         track: { id: selectedTrackId! },
-        raceKarts: selectedKartIds.map(id => ({ kart: { id } })),
-        raceEquipments: equipmentSelections.map(sel => ({
-          equipment: { id: sel.equipmentId },
-          quantity: sel.quantity,
-        })),
       });
+
+      const selectedKarts = selectedKartIds
+        .map(kartId => karts.find(kart => kart.id === kartId))
+        .filter((kart): kart is Kart => Boolean(kart));
+
+      await Promise.all([
+        ...selectedKarts.map(kart =>
+          raceKartApi.create({
+            id: { raceId: createdRace.id!, kartId: kart.id },
+            race: { id: createdRace.id! },
+            kart: {
+              id: kart.id,
+              kartNumber: kart.kartNumber,
+              mileage: kart.mileage,
+              manufactureYear: kart.manufactureYear,
+              lastServiceDate: kart.lastServiceDate,
+              status: kart.status,
+              type: kart.type,
+            },
+          })
+        ),
+        ...equipmentSelections
+          .map(sel => {
+            const item = equipment.find(eq => eq.id === sel.equipmentId);
+            if (!item) return null;
+
+            return raceEquipmentApi.create({
+              id: { raceId: createdRace.id!, equipmentId: item.id },
+              race: { id: createdRace.id! },
+              equipment: {
+                id: item.id,
+                size: item.size,
+                brand: item.brand,
+                color: item.color,
+                acquisitionDate: item.acquisitionDate,
+                type: item.type,
+                status: item.status,
+              },
+              quantity: sel.quantity,
+            });
+          })
+          .filter((request): request is Promise<unknown> => Boolean(request)),
+      ]);
 
       await paymentApi.create({
         paymentDate: new Date().toISOString(),

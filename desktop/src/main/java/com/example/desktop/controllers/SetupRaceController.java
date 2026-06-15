@@ -22,6 +22,7 @@ public class SetupRaceController {
     @FXML private ListView<Equipment> listEquipment;
 
     private final RaceService raceService = new RaceService();
+    private final RentalService rentalService = new RentalService();
     private final EmployeeService employeeService = new EmployeeService();
     private final TrackService trackService = new TrackService();
     private final KartService kartService = new KartService();
@@ -91,6 +92,13 @@ public class SetupRaceController {
             race.setRaceEquipments(raceEquipmentSet);
 
             raceService.create(race);
+
+            if (contextualRental.getId() != null
+                    && "fully_payed".equalsIgnoreCase(contextualRental.getStatus())) {
+                contextualRental.setStatus("ongoing");
+                rentalService.update(contextualRental.getId(), contextualRental);
+            }
+
             closeWindow();
         } catch (Exception e) {
             e.printStackTrace();

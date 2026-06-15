@@ -2,6 +2,7 @@ package com.example.desktop.controllers;
 
 import com.example.desktop.models.*;
 import com.example.desktop.services.RaceService;
+import com.example.desktop.services.RentalService;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -35,6 +36,7 @@ public class RaceController {
     @FXML private Button btnDelete;
 
     private final RaceService service = new RaceService();
+    private final RentalService rentalService = new RentalService();
 
     @FXML
     public void initialize() {
@@ -252,6 +254,14 @@ public class RaceController {
                 // ==========================================
 
                 service.create(selected); // Post updated race to the backend
+
+                Rental rental = selected.getRental();
+                if (rental != null && rental.getId() != null) {
+                    rental.setStatus("finished");
+                    rental.setActualEndDatetime(endStr);
+                    rentalService.update(rental.getId(), rental);
+                }
+
                 loadRaces(); // Drops seamlessly since 'finished' is filtered out
 
             } catch (Exception e) {
