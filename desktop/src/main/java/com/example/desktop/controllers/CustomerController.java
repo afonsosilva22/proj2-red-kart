@@ -218,7 +218,6 @@ public class CustomerController {
         }
     }
 
-    // Add this method to com.example.desktop.controllers.CustomerController
     @FXML
     private void deleteCustomer() {
         Customer selected = table.getSelectionModel().getSelectedItem();
